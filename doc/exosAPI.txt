@@ -1,0 +1,67 @@
+Exo 1 :
+- Salle de concert : nom, adresse, capacité
+- Concert : (unArtiste ou) unGroupe, uneSalleDeConcert, date - heure, durée, prix
+(- Artiste : nom/prénom ou pseudo, ville origine, date naissance)
+- Groupe : nom, List<Artiste>
+- Non il n'est pas pertinent de différencier un groupe d'un artiste, étant donné que l'importance est accordée sur le lieu, la date et le temps des événements.)
+- Groupe : nom, nb membres
+- Administrateur : email, mot de passe
+(- Utilisateur : email, nom, prénom, List<Billet>)
+- Billet : unConcert (ou uneSoirée), numéro
+(- Soirée : nom, List<Concert>)
+
+-> Salle + Concert : concert-api
+-> Groupe : groupe-api
+-> Admin : admin-api
+-> Billet : billet-api
+
+Exo 2 :
+- groupe-api : BDD
+- concert-api : BDD
+- admin-api : BDD
+- billet-api : BDD
+
+- front <-> plusieurs API : précis, api non surchargée, mais maintenant front compliquée
+- front <-> API principale <-> plusieurs API : maintenance front aisée mais API principale surchargée
+
+-> solution préférée : front <-> API principale <-> plusieurs API
+Le frontend doit avoir besoin de l'adresse de l'API principale et de l'existence des méthodes utilisées.
+=> core-api -> (billet-api -> concert-api -> groupe-api, admin-api, openStreatMapApi)
+
+Exo 3 :
+groupe-api :
+- POST url/groupes {"nom":"n", "nbMembres":2}
+- GET url/groupes/10
+- PUT url/groupes/10 {"nom":"nomGroupe"}
+- DELETE url/groupes/10
+
+concert-api :
+- POST/GET/PUT/DELETE url/salles(/10)
+- POST url/concerts {}
+
+admin-api :
+- GET 
+
+billet-api :
+- POST 
+
+* Diagramme de séquence :
+________                  _______                        ________                 __________                _________
+|Admin|                   |FRONT|                      |core-api|                |concert-api|             |admin-api|
+      |se connecter ------>|		       |		        |                                   |
+      |		     | POST url/login -----> |                                    |                                   |
+      |		     |{"":"", "":""}	       |                                    |                                   |
+      |		     |		       |POST url/login---------------------------------->| (garder la date à laquelle on délivre le token, pour la session)
+      |		     |		       |<---------------------------- 200 {jwt: "abc..."} |
+      |		     | <-------------- 200 {...}|                                     |                                   |
+      |<------------------- OK|                                      |                                     |                                   |
+      |créer une salle ---> |                                     |                                     |                                    |
+      |		     | POST url/createSalle|                                     |                                   |
+      |		     | header {Authorisation:token}                       |                                    |
+      |		     | body {Salle}               |                                     |                                    |
+      |		     |		       | GET url/check {jwt: ...} ----------------------->|
+      |		     |		       |<------------------------------------------- 200 OK |
+      |		     |		       | POST url/salles {Salle}                                   |
+      |		     |		       | <------ 201 CREATED|                                    |
+      |		     | <--------------- 201 OK|                                    |                                     |
+      |<------------------- OK|                                      |                                    |                                     |
