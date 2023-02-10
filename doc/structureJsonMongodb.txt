@@ -1,0 +1,12 @@
+{
+	"url": "https://lien-vers-larticle.com",
+	"type": "image ou article"
+	"date": "DD/MM/YYYY",
+	"auteur": "Éric Cariou"
+	"sujets": {
+		"groupe": ["nomGroupe1", "nomGroupe2", "nomGroupe3"],
+		"concert": [],
+		"soiree": [],
+		"salle": ["salle1"],
+	}
+}
