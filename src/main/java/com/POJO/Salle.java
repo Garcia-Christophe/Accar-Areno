@@ -2,6 +2,8 @@ package com.POJO;
 
 public class Salle {
 
+    private static final long serialVersionUID = 1L;
+
     private int idSalle;
     private String nom;
     private String adresse;
@@ -9,6 +11,19 @@ public class Salle {
     private String nomGest;
     private String prenomGest;
     private String association;
+
+    public Salle(int idSalle, String nom, String adresse, int capacite, String nomGest, String prenomGest, String association) {
+        this.idSalle = idSalle;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.capacite = capacite;
+        this.nomGest = nomGest;
+        this.prenomGest = prenomGest;
+        this.association = association;
+    }
+
+    public Salle() {
+    }
 
     public int getIdSalle() {
         return idSalle;

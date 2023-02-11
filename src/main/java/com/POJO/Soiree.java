@@ -2,10 +2,22 @@ package com.POJO;
 
 public class Soiree {
 
+    private static final long serialVersionUID = 1L;
+
     private int idSoiree;
     private String nom;
     private int idSalle;
     private int idConcert;
+
+    public Soiree(int idSoiree, String nom, int idSalle, int idConcert) {
+        this.idSoiree = idSoiree;
+        this.nom = nom;
+        this.idSalle = idSalle;
+        this.idConcert = idConcert;
+    }
+
+    public Soiree() {
+    }
 
     public int getIdSoiree() {
         return idSoiree;

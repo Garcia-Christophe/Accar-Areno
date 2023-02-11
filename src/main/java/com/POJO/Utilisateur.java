@@ -2,9 +2,22 @@ package com.POJO;
 
 public class Utilisateur {
 
+    private static final long serialVersionUID = 1L;
+
     private int idUtilisateur;
     private String mdp;
     private String nom;
+
+    public Utilisateur() {
+    }
+
+    public Utilisateur(int idUtilisateur, String mdp, String nom) {
+
+
+        this.idUtilisateur = idUtilisateur;
+        this.mdp = mdp;
+        this.nom = nom;
+    }
 
     public int getIdUtilisateur() {
         return idUtilisateur;

@@ -4,11 +4,24 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class Concert {
+
+    private static final long serialVersionUID = 1L;
     private int idConcert;
     private Date date;
     private Time heure;
     private Time duree;
     private int idGroupe;
+
+    public Concert(int idConcert, Date date, Time heure, Time duree, int idGroupe) {
+        this.idConcert = idConcert;
+        this.date = date;
+        this.heure = heure;
+        this.duree = duree;
+        this.idGroupe = idGroupe;
+    }
+
+    public Concert() {
+    }
 
     public int getIdConcert() {
         return idConcert;
