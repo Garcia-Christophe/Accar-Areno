@@ -11,7 +11,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
      * @throws SQLException
      */
     @Override
-    public Utilisateur find(int id) throws SQLException {
+    public Utilisateur find(int id) throws DAOException {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
      * @throws SQLException
      */
     @Override
-    public void create(Utilisateur utilisateur) throws SQLException {
+    public void create(Utilisateur utilisateur) throws DAOException {
 
     }
 
@@ -29,7 +29,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
      * @throws SQLException
      */
     @Override
-    public void update(Utilisateur utilisateur) throws SQLException {
+    public void update(Utilisateur utilisateur) throws DAOException {
 
     }
 
@@ -38,7 +38,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
      * @throws SQLException
      */
     @Override
-    public void delete(Utilisateur utilisateur) throws SQLException {
+    public void delete(Utilisateur utilisateur) throws DAOException {
 
     }
 }

@@ -11,7 +11,7 @@ public class GroupeDAO extends DAO<Groupe> {
      * @throws SQLException
      */
     @Override
-    public Groupe find(int id) throws SQLException {
+    public Groupe find(int id) throws DAOException {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class GroupeDAO extends DAO<Groupe> {
      * @throws SQLException
      */
     @Override
-    public void create(Groupe groupe) throws SQLException {
+    public void create(Groupe groupe) throws DAOException {
 
     }
 
@@ -29,7 +29,7 @@ public class GroupeDAO extends DAO<Groupe> {
      * @throws SQLException
      */
     @Override
-    public void update(Groupe groupe) throws SQLException {
+    public void update(Groupe groupe) throws DAOException {
 
     }
 
@@ -38,7 +38,7 @@ public class GroupeDAO extends DAO<Groupe> {
      * @throws SQLException
      */
     @Override
-    public void delete(Groupe groupe) throws SQLException {
+    public void delete(Groupe groupe) throws DAOException {
 
     }
 }

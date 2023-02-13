@@ -11,7 +11,7 @@ public class BilletDAO extends DAO<Billet>{
      * @throws SQLException
      */
     @Override
-    public Billet find(int id) throws SQLException {
+    public Billet find(int id) throws DAOException {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class BilletDAO extends DAO<Billet>{
      * @throws SQLException
      */
     @Override
-    public void create(Billet billet) throws SQLException {
+    public void create(Billet billet) throws DAOException {
 
     }
 
@@ -29,7 +29,7 @@ public class BilletDAO extends DAO<Billet>{
      * @throws SQLException
      */
     @Override
-    public void update(Billet billet) throws SQLException {
+    public void update(Billet billet) throws DAOException {
 
     }
 
@@ -38,7 +38,7 @@ public class BilletDAO extends DAO<Billet>{
      * @throws SQLException
      */
     @Override
-    public void delete(Billet billet) throws SQLException {
+    public void delete(Billet billet) throws DAOException {
 
     }
 }

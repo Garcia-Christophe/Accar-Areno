@@ -11,7 +11,7 @@ public class SalleDAO extends DAO<Salle>{
      * @throws SQLException
      */
     @Override
-    public Salle find(int id) throws SQLException {
+    public Salle find(int id) throws DAOException {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class SalleDAO extends DAO<Salle>{
      * @throws SQLException
      */
     @Override
-    public void create(Salle salle) throws SQLException {
+    public void create(Salle salle) throws DAOException {
 
     }
 
@@ -29,7 +29,7 @@ public class SalleDAO extends DAO<Salle>{
      * @throws SQLException
      */
     @Override
-    public void update(Salle salle) throws SQLException {
+    public void update(Salle salle) throws DAOException {
 
     }
 
@@ -38,7 +38,7 @@ public class SalleDAO extends DAO<Salle>{
      * @throws SQLException
      */
     @Override
-    public void delete(Salle salle) throws SQLException {
+    public void delete(Salle salle) throws DAOException {
 
     }
 }

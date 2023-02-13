@@ -11,7 +11,7 @@ public class SoireeDAO extends DAO<Soiree>{
      * @throws SQLException
      */
     @Override
-    public Soiree find(int id) throws SQLException {
+    public Soiree find(int id) throws DAOException {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class SoireeDAO extends DAO<Soiree>{
      * @throws SQLException
      */
     @Override
-    public void create(Soiree soiree) throws SQLException {
+    public void create(Soiree soiree) throws DAOException {
 
     }
 
@@ -29,7 +29,7 @@ public class SoireeDAO extends DAO<Soiree>{
      * @throws SQLException
      */
     @Override
-    public void update(Soiree soiree) throws SQLException {
+    public void update(Soiree soiree) throws DAOException {
 
     }
 
@@ -38,7 +38,7 @@ public class SoireeDAO extends DAO<Soiree>{
      * @throws SQLException
      */
     @Override
-    public void delete(Soiree soiree) throws SQLException {
+    public void delete(Soiree soiree) throws DAOException {
 
     }
 }

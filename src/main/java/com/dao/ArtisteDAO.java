@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 public class ArtisteDAO extends DAO<Artiste>{
     /**
@@ -13,9 +15,28 @@ public class ArtisteDAO extends DAO<Artiste>{
      * @return
      * @throws SQLException
      */
+
+    private Connection connection = null;
+
     @Override
-    public Artiste find(int id) throws SQLException {
-        return null;
+    public Artiste find(int id) throws DAOException {
+        try {
+            Statement req = connection.createStatement();
+            ResultSet res = req.executeQuery("select * from artiste where idArtiste=" + id);
+            if (res.next()) {
+                Artiste artiste = new Artiste();
+                artiste.setIdArtiste(res.getInt(1));
+                artiste.setNom(res.getString(2));
+                artiste.setVilleOrigine(res.getString(3));
+                artiste.setDateNaissance(res.getDate(4));
+
+                return artiste;
+            } else {
+                throw new DAOException("Le discipline d'identifiant " + id + " n'existe pas");
+            }
+        } catch (Exception e) {
+            throw new DAOException("Problème technique (" + e.getMessage() + ")");
+        }
     }
 
     /**
@@ -23,7 +44,7 @@ public class ArtisteDAO extends DAO<Artiste>{
      * @throws SQLException
      */
     @Override
-    public void create(Artiste artiste) throws SQLException {
+    public void create(Artiste artiste) throws DAOException {
 
     }
 
@@ -32,7 +53,7 @@ public class ArtisteDAO extends DAO<Artiste>{
      * @throws SQLException
      */
     @Override
-    public void update(Artiste artiste) throws SQLException {
+    public void update(Artiste artiste) throws DAOException {
 
     }
 
@@ -41,7 +62,7 @@ public class ArtisteDAO extends DAO<Artiste>{
      * @throws SQLException
      */
     @Override
-    public void delete(Artiste artiste) throws SQLException {
+    public void delete(Artiste artiste) throws DAOException {
 
     }
 }

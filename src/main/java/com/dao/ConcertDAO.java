@@ -11,7 +11,7 @@ public class ConcertDAO extends DAO<Concert>{
      * @throws SQLException
      */
     @Override
-    public Concert find(int id) throws SQLException {
+    public Concert find(int id) throws DAOException {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class ConcertDAO extends DAO<Concert>{
      * @throws SQLException
      */
     @Override
-    public void create(Concert concert) throws SQLException {
+    public void create(Concert concert) throws DAOException {
 
     }
 
@@ -29,7 +29,7 @@ public class ConcertDAO extends DAO<Concert>{
      * @throws SQLException
      */
     @Override
-    public void update(Concert concert) throws SQLException {
+    public void update(Concert concert) throws DAOException {
 
     }
 
@@ -38,7 +38,7 @@ public class ConcertDAO extends DAO<Concert>{
      * @throws SQLException
      */
     @Override
-    public void delete(Concert concert) throws SQLException {
+    public void delete(Concert concert) throws DAOException {
 
     }
 }
