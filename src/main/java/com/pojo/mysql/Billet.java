@@ -1,29 +1,67 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.pojo.mysql;
 
-public class Billet {
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+/**
+ *
+ * @author christophe.garci
+ */
+@Entity
+@Table(name = "Billet")
+@NamedQueries({
+    @NamedQuery(name = "Billet.findAll", query = "SELECT b FROM Billet b"),
+    @NamedQuery(name = "Billet.findByIdBillet", query = "SELECT b FROM Billet b WHERE b.idBillet = :idBillet"),
+    @NamedQuery(name = "Billet.findByPrix", query = "SELECT b FROM Billet b WHERE b.prix = :prix")})
+public class Billet implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private int idBillet;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idBillet")
+    private Integer idBillet;
+    @Basic(optional = false)
+    @Column(name = "prix")
     private int prix;
-    private int idSoiree;
-    private int idUtilisateur;
-
-    public Billet(int idBillet, int prix, int idSoiree, int idUtilisateur) {
-        this.idBillet = idBillet;
-        this.prix = prix;
-        this.idSoiree = idSoiree;
-        this.idUtilisateur = idUtilisateur;
-    }
+    @JoinColumn(name = "idSoiree", referencedColumnName = "idSoiree")
+    @ManyToOne
+    private Soiree idSoiree;
+    @JoinColumn(name = "idUtilisateur", referencedColumnName = "idUtilisateur")
+    @ManyToOne
+    private Utilisateur idUtilisateur;
 
     public Billet() {
     }
 
-    public int getIdBillet() {
+    public Billet(Integer idBillet) {
+        this.idBillet = idBillet;
+    }
+
+    public Billet(Integer idBillet, int prix) {
+        this.idBillet = idBillet;
+        this.prix = prix;
+    }
+
+    public Integer getIdBillet() {
         return idBillet;
     }
 
-    public void setIdBillet(int idBillet) {
+    public void setIdBillet(Integer idBillet) {
         this.idBillet = idBillet;
     }
 
@@ -35,29 +73,45 @@ public class Billet {
         this.prix = prix;
     }
 
-    public int getIdSoiree() {
+    public Soiree getIdSoiree() {
         return idSoiree;
     }
 
-    public void setIdSoiree(int idSoiree) {
+    public void setIdSoiree(Soiree idSoiree) {
         this.idSoiree = idSoiree;
     }
 
-    public int getIdUtilisateur() {
+    public Utilisateur getIdUtilisateur() {
         return idUtilisateur;
     }
 
-    public void setIdUtilisateur(int idUtilisateur) {
+    public void setIdUtilisateur(Utilisateur idUtilisateur) {
         this.idUtilisateur = idUtilisateur;
     }
 
     @Override
-    public String toString() {
-        return "Billet{" +
-                "idBillet=" + idBillet +
-                ", prix=" + prix +
-                ", idSoiree=" + idSoiree +
-                ", idUtilisateur=" + idUtilisateur +
-                '}';
+    public int hashCode() {
+        int hash = 0;
+        hash += (idBillet != null ? idBillet.hashCode() : 0);
+        return hash;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Billet)) {
+            return false;
+        }
+        Billet other = (Billet) object;
+        if ((this.idBillet == null && other.idBillet != null) || (this.idBillet != null && !this.idBillet.equals(other.idBillet))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "data.Billet[ idBillet=" + idBillet + " ]";
+    }
+    
 }

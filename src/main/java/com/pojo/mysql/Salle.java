@@ -1,19 +1,72 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.pojo.mysql;
 
-public class Salle {
-    private int idSalle;
-    private String nom;
-    private String adresse;
-    private int capacite;
-    private String nomGest;
-    private String prenomGest;
-    private String association;
+import java.io.Serializable;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-    public int getIdSalle() {
+/**
+ *
+ * @author christophe.garci
+ */
+@Entity
+@Table(name = "Salle")
+@NamedQueries({
+    @NamedQuery(name = "Salle.findAll", query = "SELECT s FROM Salle s"),
+    @NamedQuery(name = "Salle.findByIdSalle", query = "SELECT s FROM Salle s WHERE s.idSalle = :idSalle"),
+    @NamedQuery(name = "Salle.findByNom", query = "SELECT s FROM Salle s WHERE s.nom = :nom"),
+    @NamedQuery(name = "Salle.findByAdresse", query = "SELECT s FROM Salle s WHERE s.adresse = :adresse"),
+    @NamedQuery(name = "Salle.findByCapacite", query = "SELECT s FROM Salle s WHERE s.capacite = :capacite"),
+    @NamedQuery(name = "Salle.findByNomGest", query = "SELECT s FROM Salle s WHERE s.nomGest = :nomGest"),
+    @NamedQuery(name = "Salle.findByPrenomGest", query = "SELECT s FROM Salle s WHERE s.prenomGest = :prenomGest"),
+    @NamedQuery(name = "Salle.findByAssociation", query = "SELECT s FROM Salle s WHERE s.association = :association")})
+public class Salle implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idSalle")
+    private Integer idSalle;
+    @Column(name = "nom")
+    private String nom;
+    @Column(name = "adresse")
+    private String adresse;
+    @Column(name = "capacite")
+    private Integer capacite;
+    @Column(name = "nomGest")
+    private String nomGest;
+    @Column(name = "prenomGest")
+    private String prenomGest;
+    @Column(name = "association")
+    private String association;
+    @OneToMany(mappedBy = "idSalle")
+    private Set<Soiree> soireeSet;
+
+    public Salle() {
+    }
+
+    public Salle(Integer idSalle) {
+        this.idSalle = idSalle;
+    }
+
+    public Integer getIdSalle() {
         return idSalle;
     }
 
-    public void setIdSalle(int idSalle) {
+    public void setIdSalle(Integer idSalle) {
         this.idSalle = idSalle;
     }
 
@@ -33,11 +86,11 @@ public class Salle {
         this.adresse = adresse;
     }
 
-    public int getCapacite() {
+    public Integer getCapacite() {
         return capacite;
     }
 
-    public void setCapacite(int capacite) {
+    public void setCapacite(Integer capacite) {
         this.capacite = capacite;
     }
 
@@ -65,32 +118,37 @@ public class Salle {
         this.association = association;
     }
 
+    public Set<Soiree> getSoireeSet() {
+        return soireeSet;
+    }
+
+    public void setSoireeSet(Set<Soiree> soireeSet) {
+        this.soireeSet = soireeSet;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idSalle != null ? idSalle.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Salle)) {
+            return false;
+        }
+        Salle other = (Salle) object;
+        if ((this.idSalle == null && other.idSalle != null) || (this.idSalle != null && !this.idSalle.equals(other.idSalle))) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
-        return "Salle{" +
-                "idSalle=" + idSalle +
-                ", nom='" + nom + '\'' +
-                ", adresse='" + adresse + '\'' +
-                ", capacite=" + capacite +
-                ", nomGest='" + nomGest + '\'' +
-                ", prenomGest='" + prenomGest + '\'' +
-                ", association='" + association + '\'' +
-                '}';
+        return "data.Salle[ idSalle=" + idSalle + " ]";
     }
-
-    public Salle(int idSalle, String nom, String adresse, int capacite, String nomGest, String prenomGest, String association) {
-        this.idSalle = idSalle;
-        this.nom = nom;
-        this.adresse = adresse;
-        this.capacite = capacite;
-        this.nomGest = nomGest;
-        this.prenomGest = prenomGest;
-        this.association = association;
-    }
-
-    public Salle() {
-    }
+    
 }
-
-
-
