@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.pojo.mysql;
+package pojo.mysql;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -24,48 +24,43 @@ import javax.persistence.Table;
  * @author christophe.garci
  */
 @Entity
-@Table(name = "Soiree")
+@Table(name = "Groupe")
 @NamedQueries({
-    @NamedQuery(name = "Soiree.findAll", query = "SELECT s FROM Soiree s"),
-    @NamedQuery(name = "Soiree.findByIdSoiree", query = "SELECT s FROM Soiree s WHERE s.idSoiree = :idSoiree"),
-    @NamedQuery(name = "Soiree.findByNom", query = "SELECT s FROM Soiree s WHERE s.nom = :nom")})
-public class Soiree implements Serializable {
+    @NamedQuery(name = "Groupe.findAll", query = "SELECT g FROM Groupe g"),
+    @NamedQuery(name = "Groupe.findByIdGroupe", query = "SELECT g FROM Groupe g WHERE g.idGroupe = :idGroupe"),
+    @NamedQuery(name = "Groupe.findByNom", query = "SELECT g FROM Groupe g WHERE g.nom = :nom"),
+    @NamedQuery(name = "Groupe.findByNbArtists", query = "SELECT g FROM Groupe g WHERE g.nbArtists = :nbArtists")})
+public class Groupe implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idSoiree")
-    private Integer idSoiree;
-    @Basic(optional = false)
+    @Column(name = "idGroupe")
+    private Integer idGroupe;
     @Column(name = "nom")
     private String nom;
-    @JoinColumn(name = "idSalle", referencedColumnName = "idSalle")
+    @Column(name = "nbArtists")
+    private Integer nbArtists;
+    @JoinColumn(name = "idArtiste", referencedColumnName = "idArtiste")
     @ManyToOne
-    private Salle idSalle;
-    @OneToMany(mappedBy = "idSoiree")
-    private Set<Billet> billetSet;
-    @OneToMany(mappedBy = "idSoiree")
+    private Artiste idArtiste;
+    @OneToMany(mappedBy = "idGroupe")
     private Set<Concert> concertSet;
 
-    public Soiree() {
+    public Groupe() {
     }
 
-    public Soiree(Integer idSoiree) {
-        this.idSoiree = idSoiree;
+    public Groupe(Integer idGroupe) {
+        this.idGroupe = idGroupe;
     }
 
-    public Soiree(Integer idSoiree, String nom) {
-        this.idSoiree = idSoiree;
-        this.nom = nom;
+    public Integer getIdGroupe() {
+        return idGroupe;
     }
 
-    public Integer getIdSoiree() {
-        return idSoiree;
-    }
-
-    public void setIdSoiree(Integer idSoiree) {
-        this.idSoiree = idSoiree;
+    public void setIdGroupe(Integer idGroupe) {
+        this.idGroupe = idGroupe;
     }
 
     public String getNom() {
@@ -76,20 +71,20 @@ public class Soiree implements Serializable {
         this.nom = nom;
     }
 
-    public Salle getIdSalle() {
-        return idSalle;
+    public Integer getNbArtists() {
+        return nbArtists;
     }
 
-    public void setIdSalle(Salle idSalle) {
-        this.idSalle = idSalle;
+    public void setNbArtists(Integer nbArtists) {
+        this.nbArtists = nbArtists;
     }
 
-    public Set<Billet> getBilletSet() {
-        return billetSet;
+    public Artiste getIdArtiste() {
+        return idArtiste;
     }
 
-    public void setBilletSet(Set<Billet> billetSet) {
-        this.billetSet = billetSet;
+    public void setIdArtiste(Artiste idArtiste) {
+        this.idArtiste = idArtiste;
     }
 
     public Set<Concert> getConcertSet() {
@@ -103,18 +98,18 @@ public class Soiree implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idSoiree != null ? idSoiree.hashCode() : 0);
+        hash += (idGroupe != null ? idGroupe.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Soiree)) {
+        if (!(object instanceof Groupe)) {
             return false;
         }
-        Soiree other = (Soiree) object;
-        if ((this.idSoiree == null && other.idSoiree != null) || (this.idSoiree != null && !this.idSoiree.equals(other.idSoiree))) {
+        Groupe other = (Groupe) object;
+        if ((this.idGroupe == null && other.idGroupe != null) || (this.idGroupe != null && !this.idGroupe.equals(other.idGroupe))) {
             return false;
         }
         return true;
@@ -122,7 +117,7 @@ public class Soiree implements Serializable {
 
     @Override
     public String toString() {
-        return "data.Soiree[ idSoiree=" + idSoiree + " ]";
+        return "data.Groupe[ idGroupe=" + idGroupe + " ]";
     }
     
 }

@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.POJO.Utilisateur;
+import com.pojo.mysql.Utilisateur;
 
 import java.sql.SQLException;
 

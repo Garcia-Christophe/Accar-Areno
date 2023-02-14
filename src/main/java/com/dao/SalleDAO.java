@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.POJO.Salle;
+import com.pojo.mysql.Salle;
 
 import java.sql.SQLException;
 
