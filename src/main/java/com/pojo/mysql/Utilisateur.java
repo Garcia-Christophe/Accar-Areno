@@ -1,23 +1,9 @@
-package com.POJO;
+package com.pojo.mysql;
 
 public class Utilisateur {
-
-    private static final long serialVersionUID = 1L;
-
     private int idUtilisateur;
     private String mdp;
     private String nom;
-
-    public Utilisateur() {
-    }
-
-    public Utilisateur(int idUtilisateur, String mdp, String nom) {
-
-
-        this.idUtilisateur = idUtilisateur;
-        this.mdp = mdp;
-        this.nom = nom;
-    }
 
     public int getIdUtilisateur() {
         return idUtilisateur;
@@ -40,6 +26,23 @@ public class Utilisateur {
     }
 
     public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    @Override
+    public String toString() {
+        return "Utilisateur{" +
+                "idUtilisateur=" + idUtilisateur +
+                ", nom='" + nom + '\'' +
+                '}';
+    }
+
+    public Utilisateur() {
+    }
+
+    public Utilisateur(int idUtilisateur, String mdp, String nom) {
+        this.idUtilisateur = idUtilisateur;
+        this.mdp = mdp;
         this.nom = nom;
     }
 }

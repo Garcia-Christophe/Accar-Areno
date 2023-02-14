@@ -1,9 +1,6 @@
-package com.POJO;
+package com.pojo.mysql;
 
 public class Salle {
-
-    private static final long serialVersionUID = 1L;
-
     private int idSalle;
     private String nom;
     private String adresse;
@@ -11,19 +8,6 @@ public class Salle {
     private String nomGest;
     private String prenomGest;
     private String association;
-
-    public Salle(int idSalle, String nom, String adresse, int capacite, String nomGest, String prenomGest, String association) {
-        this.idSalle = idSalle;
-        this.nom = nom;
-        this.adresse = adresse;
-        this.capacite = capacite;
-        this.nomGest = nomGest;
-        this.prenomGest = prenomGest;
-        this.association = association;
-    }
-
-    public Salle() {
-    }
 
     public int getIdSalle() {
         return idSalle;
@@ -80,4 +64,33 @@ public class Salle {
     public void setAssociation(String association) {
         this.association = association;
     }
+
+    @Override
+    public String toString() {
+        return "Salle{" +
+                "idSalle=" + idSalle +
+                ", nom='" + nom + '\'' +
+                ", adresse='" + adresse + '\'' +
+                ", capacite=" + capacite +
+                ", nomGest='" + nomGest + '\'' +
+                ", prenomGest='" + prenomGest + '\'' +
+                ", association='" + association + '\'' +
+                '}';
+    }
+
+    public Salle(int idSalle, String nom, String adresse, int capacite, String nomGest, String prenomGest, String association) {
+        this.idSalle = idSalle;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.capacite = capacite;
+        this.nomGest = nomGest;
+        this.prenomGest = prenomGest;
+        this.association = association;
+    }
+
+    public Salle() {
+    }
 }
+
+
+

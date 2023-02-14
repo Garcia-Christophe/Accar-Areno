@@ -1,4 +1,4 @@
-package com.POJO;
+package com.pojo.mysql;
 
 public class Billet {
 
@@ -51,5 +51,13 @@ public class Billet {
         this.idUtilisateur = idUtilisateur;
     }
 
-
+    @Override
+    public String toString() {
+        return "Billet{" +
+                "idBillet=" + idBillet +
+                ", prix=" + prix +
+                ", idSoiree=" + idSoiree +
+                ", idUtilisateur=" + idUtilisateur +
+                '}';
+    }
 }

@@ -1,4 +1,4 @@
-package com.POJO;
+package com.pojo.mysql;
 
 public class Soiree {
 
@@ -7,13 +7,13 @@ public class Soiree {
     private int idSoiree;
     private String nom;
     private int idSalle;
-    private int idConcert;
 
-    public Soiree(int idSoiree, String nom, int idSalle, int idConcert) {
+
+
+    public Soiree(int idSoiree, String nom, int idSalle) {
         this.idSoiree = idSoiree;
         this.nom = nom;
         this.idSalle = idSalle;
-        this.idConcert = idConcert;
     }
 
     public Soiree() {
@@ -43,11 +43,12 @@ public class Soiree {
         this.idSalle = idSalle;
     }
 
-    public int getIdConcert() {
-        return idConcert;
-    }
-
-    public void setIdConcert(int idConcert) {
-        this.idConcert = idConcert;
+    @Override
+    public String toString() {
+        return "Soiree{" +
+                "idSoiree=" + idSoiree +
+                ", nom='" + nom + '\'' +
+                ", idSalle=" + idSalle +
+                '}';
     }
 }
