@@ -1,4 +1,4 @@
-package sportsDAO;
+package dao.mysql;
 
 import java.io.File;
 import java.sql.Connection;

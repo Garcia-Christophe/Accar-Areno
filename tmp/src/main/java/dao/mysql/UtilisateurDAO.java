@@ -1,6 +1,6 @@
-package com.dao;
+package dao.mysql;
 
-import com.pojo.mysql.Utilisateur;
+import pojo.mysql.Utilisateur;
 
 import java.sql.SQLException;
 
@@ -14,7 +14,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
 	
 	public EntityManager getEntityManager() {
 	  if (em == null) {
-	    EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportsPU");
+	    EntityManagerFactory emf = Persistence.createEntityManagerFactory("Acareno");
 	    em = emf.createEntityManager();
 	  }
 	  return em;
@@ -66,6 +66,13 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     public void delete(Utilisateur utilisateur) throws DAOException {
     	EntityTransaction trans = null;
         try {
+          // Suppression des billets de l'utilisateur
+          DAO<Billet> daoBillet = new DAO<Billet>();
+          for (Billet billet : utilisateur.getBilletSet()) {
+        	  daoBillet.delete(billet);
+          }
+          
+          // Suppression de l'utilisateur
           trans = em.getTransaction();
           trans.begin();
           em.remove(data);

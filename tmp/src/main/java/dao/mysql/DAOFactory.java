@@ -1,8 +1,8 @@
-package com.dao;
+package dao.mysql;
 
-import com.pojo.mysql.Utilisateur;
-import com.pojo.mysql.Soiree;
-import com.pojo.mysql.Salle;
+import pojo.mysql.Utilisateur;
+import pojo.mysql.Soiree;
+import pojo.mysql.Salle;
 
 public abstract class DAOFactory {
 

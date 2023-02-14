@@ -1,14 +1,14 @@
 package dao.mysql;
 
-import pojo.mysql.Soiree;
+import pojo.mysql.Concert;
 
 import java.sql.SQLException;
 
-public class SoireeDAO extends DAO<Soiree>{
-
+public class ConcertDAO extends DAO<Concert> {
+   
 	private EntityManager em = null;
 
-	public SoireeDAO() throws DAOException {
+	public ConcertDAO() throws DAOException {
 	  super();
 	}
 	
@@ -26,16 +26,16 @@ public class SoireeDAO extends DAO<Soiree>{
 	    em = null;
 	  }
 	}
-	
+	  
     @Override
-    public Soiree find(int id) throws DAOException {
+    public Concert find(int id) throws DAOException {
     	Query query = this.getEntityManager()
-	        .createQuery("select s from Soiree s where s.idSoiree = " + id);
-	    return (Soiree) query.getSingleResult();
+	        .createQuery("select c from Concert c where c.idConcert = " + id);
+	    return (Utilisateur) query.getSingleResult();
     }
 
     @Override
-    public void create(Soiree soiree) throws DAOException {
+    public void create(Concert concert) throws DAOException {
     	EntityTransaction trans = null;
         try {
           trans = em.getTransaction();
@@ -49,7 +49,7 @@ public class SoireeDAO extends DAO<Soiree>{
     }
 
     @Override
-    public void update(Soiree soiree) throws DAOException {
+    public void update(Concert concert) throws DAOException {
     	EntityTransaction trans = null;
         try {
           trans = em.getTransaction();
@@ -63,29 +63,16 @@ public class SoireeDAO extends DAO<Soiree>{
     }
 
     @Override
-    public void delete(Soiree soiree) throws DAOException {
+    public void delete(Concert concert) throws DAOException {
     	EntityTransaction trans = null;
         try {
-	        // Suppression des billets de la soiree
-	        DAO<Billet> daoBillet = new DAO<Billet>();
-	        for (Billet billet : soiree.getBilletSet()) {
-	      	  daoBillet.delete(billet);
-	        }
-	        
-	        // Suppression des concerts de la soiree
-	        DAO<Concert> daoConcert = new DAO<Concert>();
-	        for (Concert concert : soiree.getConcertSet()) {
-	        	daoConcert.delete(billet);
-	        }
-	            
-	        // Suppression de la soiree
-	        trans = em.getTransaction();
-	        trans.begin();
-	        em.remove(data);
-	        trans.commit();
+          trans = em.getTransaction();
+          trans.begin();
+          em.remove(data);
+          trans.commit();
         } catch (Exception e) {
-	          if (trans != null)
-	        	  trans.rollback();
+          if (trans != null)
+            trans.rollback();
         }
     }
 }

@@ -1,4 +1,4 @@
-package sportsDAO;
+package dao.mysql;
 
 /**
  * Type de support de persistance pour les données.

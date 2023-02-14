@@ -1,4 +1,4 @@
-package sportsDAO;
+package dao.mysql;
 /**
  * DAO abstrait et générique pour tout type de données.
  * @author Christophe

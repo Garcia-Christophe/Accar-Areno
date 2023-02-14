@@ -1,4 +1,4 @@
-package com.dao;
+package dao.mysql;
 
 /**
  * Exception spécifique aux problèmes d'accès aux données via un DAO.
