@@ -1,12 +1,25 @@
 package dao.mysql;
 
-import dao.mysql.UtilisateurDAO;
-import pojo.mysql.Utilisateur;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+
+import pojo.mysql.Salle;
 
 public class TestJPA {
 
   public static void main(String argv[]) throws Exception {
-    UtilisateurDAO daoUtilisateur = new UtilisateurDAO();
-    System.out.println(daoUtilisateur.find(1));
+	 EntityManager em = Persistence.createEntityManagerFactory("Acareno").createEntityManager();
+	 System.out.println("ok");
+	  
+    SalleDAO daoUtilisateur = new SalleDAO();
+    Salle salle = new Salle(5);
+    salle.setNom("nommmm");
+    salle.setAdresse("a");
+    salle.setAssociation("assoc");
+    salle.setCapacite(1);
+    salle.setNomGest("nomgest");
+    salle.setPrenomGest("prenomgest");
+    daoUtilisateur.create(salle);
   }
 }

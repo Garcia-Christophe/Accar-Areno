@@ -1,14 +1,21 @@
 package dao.mysql;
 
 import pojo.mysql.Salle;
+import pojo.mysql.Soiree;
 
 import java.sql.SQLException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 public class SalleDAO extends DAO<Salle>{
 
 	private EntityManager em = null;
 
-	public UtilisateurDAO() throws DAOException {
+	public SalleDAO() throws DAOException {
 	  super();
 	}
 	
@@ -40,7 +47,7 @@ public class SalleDAO extends DAO<Salle>{
         try {
           trans = em.getTransaction();
           trans.begin();
-          em.persist(data);
+          em.persist(salle);
           trans.commit();
         } catch (Exception e) {
           if (trans != null)
@@ -54,7 +61,7 @@ public class SalleDAO extends DAO<Salle>{
         try {
 	        trans = em.getTransaction();
 	        trans.begin();
-	        em.refresh(data);
+	        em.refresh(salle);
 	        trans.commit();
         } catch (Exception e) {
           if (trans != null)
@@ -67,7 +74,7 @@ public class SalleDAO extends DAO<Salle>{
     	EntityTransaction trans = null;
         try {
         	// Suppression des soirees de la salle
-	        DAO<Soiree> daoSoiree = new DAO<Soiree>();
+	        DAO<Soiree> daoSoiree = new SoireeDAO();
 	        for (Soiree soiree : salle.getSoireeSet()) {
 	        	daoSoiree.delete(soiree);
 	        }
@@ -75,7 +82,7 @@ public class SalleDAO extends DAO<Salle>{
 	        // Suppression de la salle
 	        trans = em.getTransaction();
 	        trans.begin();
-	        em.remove(data);
+	        em.remove(salle);
 	        trans.commit();
         } catch (Exception e) {
           if (trans != null)

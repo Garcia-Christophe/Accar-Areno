@@ -17,10 +17,10 @@ public class Sujets {
     }
 
     public Sujets() {
-        this.groupe = new ArrayList<>();
-        this.concert = new ArrayList<>();
-        this.soiree = new ArrayList<>();
-        this.salle = new ArrayList<>();
+        this.groupe = new ArrayList<String>();
+        this.concert = new ArrayList<String>();
+        this.soiree = new ArrayList<String>();
+        this.salle = new ArrayList<String>();
     }
 
     public ArrayList<String> getGroupe() {

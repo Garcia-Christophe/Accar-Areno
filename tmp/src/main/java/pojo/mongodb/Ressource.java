@@ -6,11 +6,11 @@ import java.util.Objects;
 public class Ressource {
     private String url;
     private String type;
-    private Date date;
+    private String date;
     private String auteur;
     private Sujets sujets;
 
-    public Ressource(String url, String type, Date date, String auteur, Sujets sujets) {
+    public Ressource(String url, String type, String date, String auteur, Sujets sujets) {
         this.url = url;
         this.type = type;
         this.date = date;
@@ -38,11 +38,11 @@ public class Ressource {
         this.type = type;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

@@ -1,7 +1,6 @@
 package dao.mysql;
 
 import pojo.mysql.Billet;
-import pojo.mysql.Utilisateur;
 
 import java.sql.SQLException;
 
@@ -11,11 +10,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class UtilisateurDAO extends DAO<Utilisateur> {
+public class BilletDAO extends DAO<Billet> {
    
 	private EntityManager em = null;
 
-	public UtilisateurDAO() throws DAOException {
+	public BilletDAO() throws DAOException {
 	  super();
 	}
 	
@@ -35,14 +34,14 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
 	}
 	  
     @Override
-    public Utilisateur find(int id) throws DAOException {
+    public Billet find(int id) throws DAOException {
     	Query query = this.getEntityManager()
-	        .createQuery("select u from Utilisateur u where u.idUtilisateur = " + id);
-	    return (Utilisateur) query.getSingleResult();
+	        .createQuery("select u from Billet u where u.idBillet = " + id);
+	    return (Billet) query.getSingleResult();
     }
 
     @Override
-    public void create(Utilisateur utilisateur) throws DAOException {
+    public void create(Billet utilisateur) throws DAOException {
     	EntityTransaction trans = null;
         try {
           trans = em.getTransaction();
@@ -56,7 +55,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     }
 
     @Override
-    public void update(Utilisateur utilisateur) throws DAOException {
+    public void update(Billet utilisateur) throws DAOException {
     	EntityTransaction trans = null;
         try {
           trans = em.getTransaction();
@@ -70,16 +69,9 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     }
 
     @Override
-    public void delete(Utilisateur utilisateur) throws DAOException {
+    public void delete(Billet utilisateur) throws DAOException {
     	EntityTransaction trans = null;
         try {
-          // Suppression des billets de l'utilisateur
-          DAO<Billet> daoBillet = new BilletDAO();
-          for (Billet billet : utilisateur.getBilletSet()) {
-        	  daoBillet.delete(billet);
-          }
-          
-          // Suppression de l'utilisateur
           trans = em.getTransaction();
           trans.begin();
           em.remove(utilisateur);

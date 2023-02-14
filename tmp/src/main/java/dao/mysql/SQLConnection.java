@@ -8,8 +8,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * Connexion à la base de BDD à partir d'un fichier XML de configuration pour JDBC.
- * @author Eric
+ * Connexion ï¿½ la base de BDD ï¿½ partir d'un fichier XML de configuration pour JDBC.
+ *
  */
 public class SQLConnection {
 
@@ -19,7 +19,7 @@ public class SQLConnection {
     private static ConfigJDBC config = null;
     
     /**
-     * Connexion à la base de données, pour réaliser les requêtes SQL
+     * Connexion ï¿½ la base de donnï¿½es, pour rï¿½aliser les requï¿½tes SQL
      */
     private static Connection connection = null;
     
@@ -30,12 +30,12 @@ public class SQLConnection {
  
     /**
      * Charge le contenu du fichier XML de configuration.
-     * @throws DAOException en cas de problème d'accès au fichier ou de 
+     * @throws DAOException en cas de problï¿½me d'accï¿½s au fichier ou de 
      * lecture de son contenu
      */
     private static void loadConfigFile() throws DAOException {
         try {
-            JAXBContext jc = JAXBContext.newInstance(sportsDAO.ConfigJDBC.class);
+            JAXBContext jc = JAXBContext.newInstance(ConfigJDBC.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             config = (ConfigJDBC)unmarshaller.unmarshal(new File(configFile));
         }
@@ -45,10 +45,10 @@ public class SQLConnection {
     }
     
     /**
-     * Renvoie la connexion vers le SGBD. Fonctionne en mode singleton : la connexion est instanciée une seule fois.
-     * Utilise le fichier de config JDBC par défaut se trouvant dans le package sportsDAO des sources.
+     * Renvoie la connexion vers le SGBD. Fonctionne en mode singleton : la connexion est instanciï¿½e une seule fois.
+     * Utilise le fichier de config JDBC par dï¿½faut se trouvant dans le package sportsDAO des sources.
      * @return la connexion JDBC vers le SGBD
-     * @throws DAOException en cas de problème
+     * @throws DAOException en cas de problï¿½me
      */
     public static Connection getConnection() throws DAOException {
         try {
@@ -57,16 +57,16 @@ public class SQLConnection {
                 connection = DriverManager.getConnection(config.getUrl(), config.getUser(), config.getPassword());
             return connection;
         } catch (SQLException ex) {
-            throw new DAOException("Impossible de se connecter à la BDD ("+ex.getMessage()+")"); 
+            throw new DAOException("Impossible de se connecter ï¿½ la BDD ("+ex.getMessage()+")"); 
         }
     }
     
     /**
-     * Renvoie la connexion vers le SGBD. Fonctionne en mode singleton : la connexion est instanciée une seule fois.
-     * Utilise le fichier de config JDBC passé en paramètre.
+     * Renvoie la connexion vers le SGBD. Fonctionne en mode singleton : la connexion est instanciï¿½e une seule fois.
+     * Utilise le fichier de config JDBC passï¿½ en paramï¿½tre.
      * @param configFile nom du fichier XML de connexion JDBC
      * @return la connexion JDBC vers le SGBD
-     * @throws DAOException en cas de problème
+     * @throws DAOException en cas de problï¿½me
      */
     public static Connection getConnection(String configFile) throws DAOException {
         SQLConnection.configFile = configFile;
@@ -80,7 +80,7 @@ public class SQLConnection {
         if (connection != null) try {
             connection.close();
         } catch (SQLException ex) {
-            // rien à faire
+            // rien ï¿½ faire
         }
         connection = null;
     }

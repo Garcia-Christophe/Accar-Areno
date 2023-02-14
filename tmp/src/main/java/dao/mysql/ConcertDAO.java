@@ -4,6 +4,12 @@ import pojo.mysql.Concert;
 
 import java.sql.SQLException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
 public class ConcertDAO extends DAO<Concert> {
    
 	private EntityManager em = null;
@@ -31,7 +37,7 @@ public class ConcertDAO extends DAO<Concert> {
     public Concert find(int id) throws DAOException {
     	Query query = this.getEntityManager()
 	        .createQuery("select c from Concert c where c.idConcert = " + id);
-	    return (Utilisateur) query.getSingleResult();
+	    return (Concert) query.getSingleResult();
     }
 
     @Override
@@ -40,7 +46,7 @@ public class ConcertDAO extends DAO<Concert> {
         try {
           trans = em.getTransaction();
           trans.begin();
-          em.persist(data);
+          em.persist(concert);
           trans.commit();
         } catch (Exception e) {
           if (trans != null)
@@ -54,7 +60,7 @@ public class ConcertDAO extends DAO<Concert> {
         try {
           trans = em.getTransaction();
           trans.begin();
-          em.refresh(data);
+          em.refresh(concert);
           trans.commit();
         } catch (Exception e) {
           if (trans != null)
@@ -68,7 +74,7 @@ public class ConcertDAO extends DAO<Concert> {
         try {
           trans = em.getTransaction();
           trans.begin();
-          em.remove(data);
+          em.remove(concert);
           trans.commit();
         } catch (Exception e) {
           if (trans != null)
