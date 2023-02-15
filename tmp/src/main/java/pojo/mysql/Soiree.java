@@ -49,6 +49,7 @@ public class Soiree implements Serializable {
     private Set<Concert> concertSet;
 
     public Soiree() {
+    	
     }
 
     public Soiree(Integer idSoiree) {

@@ -29,7 +29,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "Groupe.findAll", query = "SELECT g FROM Groupe g"),
     @NamedQuery(name = "Groupe.findByIdGroupe", query = "SELECT g FROM Groupe g WHERE g.idGroupe = :idGroupe"),
     @NamedQuery(name = "Groupe.findByNom", query = "SELECT g FROM Groupe g WHERE g.nom = :nom"),
-    @NamedQuery(name = "Groupe.findByNbArtists", query = "SELECT g FROM Groupe g WHERE g.nbArtists = :nbArtists")})
+    @NamedQuery(name = "Groupe.findByNbArtistes", query = "SELECT g FROM Groupe g WHERE g.nbArtistes = :nbArtistes")})
 public class Groupe implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,15 +40,15 @@ public class Groupe implements Serializable {
     private Integer idGroupe;
     @Column(name = "nom")
     private String nom;
-    @Column(name = "nbArtists")
-    private Integer nbArtists;
-    @JoinColumn(name = "idArtiste", referencedColumnName = "idArtiste")
-    @ManyToOne
-    private Artiste idArtiste;
+    @Column(name = "nbArtistes")
+    private Integer nbArtistes;
     @OneToMany(mappedBy = "idGroupe")
     private Set<Concert> concertSet;
+    @OneToMany(mappedBy = "idGroupe")
+    private Set<Artiste> artisteSet;
 
     public Groupe() {
+    	this.nbArtistes = 0;
     }
 
     public Groupe(Integer idGroupe) {
@@ -71,24 +71,24 @@ public class Groupe implements Serializable {
         this.nom = nom;
     }
 
-    public Integer getNbArtists() {
-        return nbArtists;
+    public Integer getNbArtistes() {
+        return nbArtistes;
     }
 
-    public void setNbArtists(Integer nbArtists) {
-        this.nbArtists = nbArtists;
-    }
-
-    public Artiste getIdArtiste() {
-        return idArtiste;
-    }
-
-    public void setIdArtiste(Artiste idArtiste) {
-        this.idArtiste = idArtiste;
+    public void setNbArtistes(Integer nbArtists) {
+        this.nbArtistes = nbArtists;
     }
 
     public Set<Concert> getConcertSet() {
         return concertSet;
+    }
+
+    public void setArtisteSet(Set<Artiste> artisteSet) {
+        this.artisteSet = artisteSet;
+    }
+    
+    public Set<Artiste> getArtisteSet() {
+        return artisteSet;
     }
 
     public void setConcertSet(Set<Concert> concertSet) {

@@ -5,6 +5,7 @@
 package pojo.mysql;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -56,11 +57,13 @@ public class Salle implements Serializable {
     private Set<Soiree> soireeSet;
 
     public Salle() {
+    	soireeSet = new HashSet<Soiree>();
     }
 
-    public Salle(Integer idSalle) {
-        this.idSalle = idSalle;
-    }
+//    public Salle(Integer idSalle) {
+//        this.idSalle = idSalle;
+//        soireeSet = new HashSet<Soiree>();
+//    }
 
     public Integer getIdSalle() {
         return idSalle;
