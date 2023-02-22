@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<configJDBC>
-    <url>jdbc:mysql://localhost:3306/gestionconcerts</url>
-    <user>root</user>
-    <password></password>
-</configJDBC>
-
