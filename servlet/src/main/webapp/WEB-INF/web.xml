@@ -9,4 +9,14 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>ArtisteServlet</display-name>
+    <servlet-name>ArtisteServlet</servlet-name>
+    <servlet-class>groupeapi.ArtisteServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ArtisteServlet</servlet-name>
+    <url-pattern>/ArtisteServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

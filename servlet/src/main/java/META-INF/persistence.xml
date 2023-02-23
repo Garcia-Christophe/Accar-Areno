@@ -10,11 +10,12 @@
     <class>pojo.mysql.Salle</class>
     <class>pojo.mysql.Groupe</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://obiwan.univ-brest.fr:3306/zfm1-zgarciach_1"/>
-      <property name="javax.persistence.jdbc.user" value="zgarciach"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/accarareno"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="y4bhcyub"/>
       <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
     </properties>
   </persistence-unit>
 </persistence>

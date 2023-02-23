@@ -1,5 +1,7 @@
 package dao.mysql;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
@@ -13,13 +15,14 @@ import pojo.mysql.Utilisateur;
 
 public class TestJPA {
 
+	@SuppressWarnings("unchecked")
 	public static void main(String argv[]) throws Exception {
 		EntityManager em = Persistence.createEntityManagerFactory("Accarareno").createEntityManager();
 		System.out.println("ok");
 
 //		Groupe g = new Groupe();
 //		g.setNom("One Direction");
-		GroupeDAO daoGroupe = new GroupeDAO();
+//		GroupeDAO daoGroupe = new GroupeDAO();
 //		daoGroupe.create(g);
 		
 //		Artiste a = new Artiste();
@@ -27,6 +30,9 @@ public class TestJPA {
 //		a.setVilleOrigine("London");
 //		a.setIdGroupe(g);
 		ArtisteDAO daoArtiste = new ArtisteDAO();
+		for(Artiste a : (List<Artiste>)daoArtiste.findAll()) {
+			System.out.println(a);
+		}
 //		daoArtiste.create(a);
 		
 //		Artiste b = new Artiste();
@@ -41,7 +47,7 @@ public class TestJPA {
 //		UtilisateurDAO daoUtilisateur = new UtilisateurDAO();
 //		daoUtilisateur.create(u);
 		
-		Groupe g = daoGroupe.find(6);
+//		Groupe g = daoGroupe.find(6);
 //		g.setNbArtistes(5);
 //		daoGroupe.update(g);
 
@@ -51,6 +57,6 @@ public class TestJPA {
 //		System.out.println(g.getArtisteSet().size());
 //		daoArtiste.delete(a);
 //		System.out.println(g.getArtisteSet().size());
-		daoGroupe.delete(g);
+//		daoGroupe.delete(g);
 	}
 }

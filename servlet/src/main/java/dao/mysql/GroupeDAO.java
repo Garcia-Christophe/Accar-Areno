@@ -6,6 +6,7 @@ import pojo.mysql.Soiree;
 
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -94,5 +95,13 @@ public class GroupeDAO extends DAO<Groupe> {
 			if (trans != null)
 				trans.rollback();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<?> findAll() throws DAOException {
+		em = this.getEntityManager();
+		Query query = em.createQuery("select u from Groupe u");
+		return (List<Groupe>) query.getResultList();
 	}
 }

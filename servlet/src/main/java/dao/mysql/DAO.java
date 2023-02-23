@@ -1,46 +1,58 @@
 package dao.mysql;
+
+import java.util.List;
+
+import pojo.mysql.Artiste;
+
 /**
- * DAO abstrait et générique pour tout type de données.
+ * DAO abstrait et gï¿½nï¿½rique pour tout type de donnï¿½es.
  * @author Christophe
- * @param <D> la classe paramètrant le DAO
+ * @param <D> la classe paramï¿½trant le DAO
  */
 public abstract class DAO<D> {
     
    /**
-     * Retourne à partir du support de persistance un objet en fonction de son identifiant.
+     * Retourne ï¿½ partir du support de persistance un objet en fonction de son identifiant.
      * @param id identifiant de l'objet
      * @return l'instance de l'objet
-     * @throws DAOException en cas de problème
+     * @throws DAOException en cas de problï¿½me
     */
     public abstract D find(int id) throws DAOException;
 
     /**
-     * Rend persistant un objet qui n'avait pas encore de réprésentation sur 
+     * Rend persistant un objet qui n'avait pas encore de rï¿½prï¿½sentation sur 
      * le support de persistance.
-     * @param data l'objet à rendre persistant
-     * @throws DAOException en cas de problème
+     * @param data l'objet ï¿½ rendre persistant
+     * @throws DAOException en cas de problï¿½me
      */
     public abstract void create(D data) throws DAOException;
 
     /**
-     * Met à jour le contenu correspondant à l'objet sur le support persistant (l'objet
-     * avait déjà  une représentation sur le support persistant).
-     * @param data l'objet modifié dont le contenu est à mettre à jour
-     * @throws DAOException en cas de problème
+     * Met ï¿½ jour le contenu correspondant ï¿½ l'objet sur le support persistant (l'objet
+     * avait dï¿½jï¿½ une reprï¿½sentation sur le support persistant).
+     * @param data l'objet modifiï¿½ dont le contenu est ï¿½ mettre ï¿½ jour
+     * @throws DAOException en cas de problï¿½me
      */
     public abstract void update(D data) throws DAOException;
 
     /**
-     * Efface du support persistant le contenu équivalent à l'objet.
-     * @param data l'objet à supprimer 
-     * @throws DAOException en cas de problème
+     * Efface du support persistant le contenu ï¿½quivalent ï¿½ l'objet.
+     * @param data l'objet ï¿½ supprimer 
+     * @throws DAOException en cas de problï¿½me
      */
     public abstract void delete(D data) throws DAOException;
     
     /**
-     * Construit le DAO pour la classe paramétrée.
-     * @throws DAOException en cas de problème
+     * Construit le DAO pour la classe paramï¿½trï¿½e.
+     * @throws DAOException en cas de problï¿½me
      */
     public DAO() throws DAOException {
     }
+
+    /**
+     * Retourne ï¿½ partir du support de persistance une liste d'objets.
+     * @return la liste d'objets
+     * @throws DAOException en cas de problï¿½me
+    */
+	public abstract List<?> findAll() throws DAOException;
 }
