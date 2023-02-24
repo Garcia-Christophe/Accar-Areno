@@ -1,14 +1,14 @@
 package dao.mysql;
 
-import pojo.mysql.Billet;
-
-import java.sql.SQLException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import pojo.mysql.Billet;
 
 public class BilletDAO extends DAO<Billet> {
 
@@ -37,7 +37,22 @@ public class BilletDAO extends DAO<Billet> {
 	public Billet find(int id) throws DAOException {
 		em = this.getEntityManager();
 		Query query = em.createQuery("select u from Billet u where u.idBillet = " + id);
-		return (Billet) query.getSingleResult();
+		try {
+			return (Billet) query.getSingleResult();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
+	}
+
+	@Override
+	public List<?> findAll() throws DAOException {
+		em = this.getEntityManager();
+		Query query = em.createQuery("select u from Billet u");
+		try {
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
 	}
 
 	@Override

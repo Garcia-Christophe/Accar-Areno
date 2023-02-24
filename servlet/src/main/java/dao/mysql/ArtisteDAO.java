@@ -1,8 +1,5 @@
 package dao.mysql;
 
-import pojo.mysql.Artiste;
-import pojo.mysql.Groupe;
-
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,6 +7,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import pojo.mysql.Artiste;
+import pojo.mysql.Groupe;
 
 public class ArtisteDAO extends DAO<Artiste> {
 
@@ -38,17 +38,24 @@ public class ArtisteDAO extends DAO<Artiste> {
 	public Artiste find(int id) throws DAOException {
 		em = this.getEntityManager();
 		Query query = em.createQuery("select u from Artiste u where u.idArtiste = " + id);
-		return (Artiste) query.getSingleResult();
+		try {
+			return (Artiste) query.getSingleResult();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<?> findAll() throws DAOException {
 		em = this.getEntityManager();
 		Query query = em.createQuery("select u from Artiste u");
-		return (List<Artiste>) query.getResultList();
+		try {
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
 	}
-	
+
 	@Override
 	public void create(Artiste artiste) throws DAOException {
 		em = this.getEntityManager();

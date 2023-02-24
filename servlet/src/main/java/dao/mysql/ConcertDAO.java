@@ -1,14 +1,14 @@
 package dao.mysql;
 
-import pojo.mysql.Concert;
-
-import java.sql.SQLException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import pojo.mysql.Concert;
 
 public class ConcertDAO extends DAO<Concert> {
 
@@ -37,7 +37,22 @@ public class ConcertDAO extends DAO<Concert> {
 	public Concert find(int id) throws DAOException {
 		em = this.getEntityManager();
 		Query query = em.createQuery("select c from Concert c where c.idConcert = " + id);
-		return (Concert) query.getSingleResult();
+		try {
+			return (Concert) query.getSingleResult();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
+	}
+
+	@Override
+	public List<?> findAll() throws DAOException {
+		em = this.getEntityManager();
+		Query query = em.createQuery("select u from Concert u");
+		try {
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
 	}
 
 	@Override

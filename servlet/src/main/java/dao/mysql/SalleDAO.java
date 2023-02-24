@@ -1,11 +1,5 @@
 package dao.mysql;
 
-import pojo.mysql.Concert;
-import pojo.mysql.Salle;
-import pojo.mysql.Soiree;
-
-import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +8,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import pojo.mysql.Salle;
+import pojo.mysql.Soiree;
 
 public class SalleDAO extends DAO<Salle> {
 
@@ -41,11 +38,23 @@ public class SalleDAO extends DAO<Salle> {
 	@Override
 	public Salle find(int id) throws DAOException {
 		em = this.getEntityManager();
-		
-		// Récupération de la salle
 		Query query = em.createQuery("select s from Salle s where s.idSalle = " + id);
-		Salle salle = (Salle) query.getSingleResult();
-		return salle;
+		try {
+			return (Salle) query.getSingleResult();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
+	}
+
+	@Override
+	public List<?> findAll() throws DAOException {
+		em = this.getEntityManager();
+		Query query = em.createQuery("select u from Salle u");
+		try {
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
 	}
 
 	@Override
@@ -95,7 +104,7 @@ public class SalleDAO extends DAO<Salle> {
 			trans.begin();
 			em.remove(salle);
 			trans.commit();
-			
+
 		} catch (Exception e) {
 			System.out.println("err : " + e.getMessage());
 			if (trans != null)

@@ -1,17 +1,17 @@
 package dao.mysql;
 
-import pojo.mysql.Billet;
-import pojo.mysql.Concert;
-import pojo.mysql.Soiree;
-
-import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import pojo.mysql.Billet;
+import pojo.mysql.Concert;
+import pojo.mysql.Soiree;
 
 public class SoireeDAO extends DAO<Soiree> {
 
@@ -40,7 +40,22 @@ public class SoireeDAO extends DAO<Soiree> {
 	public Soiree find(int id) throws DAOException {
 		em = this.getEntityManager();
 		Query query = em.createQuery("select s from Soiree s where s.idSoiree = " + id);
-		return (Soiree) query.getSingleResult();
+		try {
+			return (Soiree) query.getSingleResult();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
+	}
+
+	@Override
+	public List<?> findAll() throws DAOException {
+		em = this.getEntityManager();
+		Query query = em.createQuery("select u from Soiree u");
+		try {
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
 	}
 
 	@Override

@@ -1,10 +1,5 @@
 package dao.mysql;
 
-import pojo.mysql.Artiste;
-import pojo.mysql.Groupe;
-import pojo.mysql.Soiree;
-
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +8,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import pojo.mysql.Artiste;
+import pojo.mysql.Groupe;
 
 public class GroupeDAO extends DAO<Groupe> {
 
@@ -41,7 +39,22 @@ public class GroupeDAO extends DAO<Groupe> {
 	public Groupe find(int id) throws DAOException {
 		em = this.getEntityManager();
 		Query query = em.createQuery("select u from Groupe u where u.idGroupe = " + id);
-		return (Groupe) query.getSingleResult();
+		try {
+			return (Groupe) query.getSingleResult();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
+	}
+
+	@Override
+	public List<?> findAll() throws DAOException {
+		em = this.getEntityManager();
+		Query query = em.createQuery("select u from Groupe u");
+		try {
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new DAOException();
+		}
 	}
 
 	@Override
@@ -95,13 +108,5 @@ public class GroupeDAO extends DAO<Groupe> {
 			if (trans != null)
 				trans.rollback();
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<?> findAll() throws DAOException {
-		em = this.getEntityManager();
-		Query query = em.createQuery("select u from Groupe u");
-		return (List<Groupe>) query.getResultList();
 	}
 }
