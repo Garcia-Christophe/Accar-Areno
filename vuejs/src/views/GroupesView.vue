@@ -57,6 +57,7 @@ export default {
         nom: null,
       },
       groupeSelectionne: null,
+      url: "http://localhost:8080/accarareno/groupes",
     };
   },
   mounted() {
@@ -65,7 +66,7 @@ export default {
   methods: {
     getGroupes() {
       axios
-        .get("http://localhost:8080/accarareno/groupes")
+        .get(this.url)
         .then((response) => {
           console.log(response);
           document.getElementById("status").innerHTML =
@@ -79,7 +80,7 @@ export default {
         });
     },
     addGroupe() {
-      let link = "http://localhost:8080/accarareno/groupes?";
+      let link = this.url + "?";
       if (this.nouveauGroupe.nom != null) {
         link += "nom=" + this.nouveauGroupe.nom;
       }
@@ -103,9 +104,7 @@ export default {
       this.groupeSelectionne = groupe;
     },
     updateGroupe() {
-      let link =
-        "http://localhost:8080/accarareno/groupes?id=" +
-        this.groupeSelectionne.idArtiste;
+      let link = this.url + "?id=" + this.groupeSelectionne.idGroupe;
       if (this.groupeSelectionne.nom != null) {
         link += "&nom=" + this.groupeSelectionne.nom;
       }
@@ -125,9 +124,7 @@ export default {
     },
     deleteGroupe(groupe) {
       axios
-        .delete(
-          "http://localhost:8080/accarareno/groupes?id=" + groupe.idGroupe
-        )
+        .delete(this.url + "?id=" + groupe.idGroupe)
         .then((response) => {
           document.getElementById("status").innerHTML =
             "Status : " + response.data.status;

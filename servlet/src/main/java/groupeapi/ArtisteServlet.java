@@ -468,4 +468,10 @@ public class ArtisteServlet extends HttpServlet {
 		out.close();
 	}
 
+	@Override
+	protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("Access-Control-Allow-Methods", "GET, PUT, HEAD, POST, DELETE, TRACE, OPTIONS");
+		resp.setHeader("Access-Control-Allow-Origin", "*");
+	}
+
 }
