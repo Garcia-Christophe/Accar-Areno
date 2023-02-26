@@ -6,13 +6,19 @@ import lombok.Data;
 @Entity
 @Data
 public class Billet {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idBillet")
     private Integer idBillet;
-    private Integer prix;
+    @Basic(optional = false)
+    @Column(name = "prix")
+    private int prix;
+    @JoinColumn(name = "idSoiree", referencedColumnName = "idSoiree")
     @ManyToOne
-    @JoinColumn(name = "idSoiree")
-    private Soiree soiree;
+    private Soiree idSoiree;
+    @JoinColumn(name = "idUtilisateur", referencedColumnName = "idUtilisateur")
     @ManyToOne
-    @JoinColumn(name = "idUtilisateur")
-    private Utilisateur utilisateur;
+    private Utilisateur idUtilisateur;
+
 }

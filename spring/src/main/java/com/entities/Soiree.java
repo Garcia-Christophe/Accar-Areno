@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,12 +19,12 @@ public class Soiree {
     @Basic(optional = false)
     @Column(name = "nom")
     private String nom;
-    @JoinColumn(name = "idSalle")
+    @JoinColumn(name = "idSalle", referencedColumnName = "idSalle")
     @ManyToOne
     private Salle idSalle;
-    @OneToMany
+    @OneToMany(mappedBy = "idSoiree")
     private Set<Billet> billetSet;
-    @OneToMany
+    @OneToMany(mappedBy = "idSoiree")
     private Set<Concert> concertSet;
 
 }

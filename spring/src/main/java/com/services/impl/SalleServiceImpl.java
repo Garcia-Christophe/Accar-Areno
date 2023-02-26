@@ -2,7 +2,9 @@ package com.services.impl;
 
 import com.dtos.SalleDto;
 import com.entities.Salle;
+import com.entities.Soiree;
 import com.repositories.SalleRepository;
+import com.repositories.SoireeRepository;
 import com.services.SalleService;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,14 @@ import java.util.List;
 public class SalleServiceImpl implements SalleService {
 
     private final SalleRepository salleRepository;
+    private final SoireeRepository soireeRepository;
+    private final SoireeServiceImpl soireeService;
 
-    public SalleServiceImpl(SalleRepository salleRepository) {
+
+    public SalleServiceImpl(SalleRepository salleRepository, SoireeRepository soireeRepository, SoireeServiceImpl soireeService) {
         this.salleRepository = salleRepository;
+        this.soireeRepository = soireeRepository;
+        this.soireeService = soireeService;
     }
 
     /**
@@ -46,7 +53,12 @@ public class SalleServiceImpl implements SalleService {
      */
     @Override
     public boolean deleteSalle(int salleId) {
-        salleRepository.deleteAll();
+        List<Soiree> soireeList = soireeRepository.findAll();
+        for( Soiree soiree : soireeList)
+            if(soiree.getIdSalle().getIdSalle()==salleId)
+                soireeService.deleteSoiree(soiree.getIdSoiree());
+
+        salleRepository.deleteById(salleId);
         //salleRepository.de
         return true;
     }

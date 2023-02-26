@@ -66,7 +66,7 @@ public class ArtisteServiceImpl implements ArtisteService {
         artisteDto.setNom(artiste.getNom());
         artisteDto.setVilleOrigine(artiste.getVilleOrigine());
         artisteDto.setDateNaissance(artiste.getDateNaissance());
-        artisteDto.setIdGroupe(artiste.getGroupe().getIdGroupe());
+        artisteDto.setIdGroupe(artiste.getIdGroupe().getIdGroupe());
         return artisteDto;
     }
 
@@ -76,7 +76,8 @@ public class ArtisteServiceImpl implements ArtisteService {
         artiste.setNom(artisteDto.getNom());
         artiste.setVilleOrigine(artisteDto.getVilleOrigine());
         artiste.setDateNaissance(artisteDto.getDateNaissance());
-        artiste.getGroupe().setIdGroupe(artisteDto.getIdArtiste());
+        //artiste.getGroupe().setIdGroupe(artisteDto.getIdArtiste());
+        artiste.getIdGroupe().setIdGroupe(artisteDto.getIdGroupe());
         return artiste;
     }
 }

@@ -1,21 +1,27 @@
 package com.entities;
 
 import javax.persistence.*;
-
 import lombok.Data;
-
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
 public class Groupe {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idGroupe;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idGroupe")
+    private Integer idGroupe;
+    @Column(name = "nom")
     private String nom;
-    private int nbArtistes;
-    @OneToMany
-    private List<Concert> concerts;
+    @Column(name = "nbArtistes")
+    private Integer nbArtistes;
+    @OneToMany(mappedBy = "idGroupe")
+    private Set<Concert> concertSet;
+    @OneToMany(mappedBy = "idGroupe")
+    private Set<Artiste> artisteSet;
+
 
 }
 

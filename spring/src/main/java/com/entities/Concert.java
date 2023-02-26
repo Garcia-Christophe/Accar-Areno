@@ -23,7 +23,7 @@ public class Concert {
     //@Temporal(TemporalType.TIME)
     private Time heure;
     @Column(name = "duree")
-   // @Temporal(TemporalType.TIME)
+    //@Temporal(TemporalType.TIME)
     private Time duree;
     @JoinColumn(name = "idGroupe", referencedColumnName = "idGroupe")
     @ManyToOne
@@ -31,6 +31,7 @@ public class Concert {
     @JoinColumn(name = "idSoiree", referencedColumnName = "idSoiree")
     @ManyToOne
     private Soiree idSoiree;
+
 
 
 }

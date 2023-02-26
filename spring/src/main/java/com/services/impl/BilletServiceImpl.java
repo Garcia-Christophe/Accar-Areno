@@ -66,8 +66,8 @@ public class BilletServiceImpl implements BilletService {
         BilletDto billetDto = new BilletDto();
         billetDto.setIdBillet(billet.getIdBillet());
         billetDto.setPrix(billet.getPrix());
-        billetDto.setIdSoiree(billet.getSoiree().getIdSoiree());
-        billetDto.setIdUtilisateur(billet.getUtilisateur().getIdUtilisateur());
+        billetDto.setIdSoiree(billet.getIdSoiree().getIdSoiree());
+        billetDto.setIdUtilisateur(billet.getIdUtilisateur().getIdUtilisateur());
         return billetDto;
     }
 
@@ -75,8 +75,8 @@ public class BilletServiceImpl implements BilletService {
         Billet billet = new Billet();
         billet.setIdBillet(billetDto.getIdBillet());
         billet.setPrix(billet.getPrix());
-        billet.getSoiree().setIdSoiree((billetDto.getIdSoiree()));
-        billet.getUtilisateur().setIdUtilisateur(billetDto.getIdUtilisateur());
+        billet.getIdSoiree().setIdSoiree((billetDto.getIdSoiree()));
+        billet.getIdUtilisateur().setIdUtilisateur(billetDto.getIdUtilisateur());
         return billet;
     }
 }

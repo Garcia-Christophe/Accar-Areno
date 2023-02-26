@@ -11,9 +11,6 @@ import java.util.Set;
 @Entity
 @Data
 public class Salle {
-
-
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -33,6 +30,9 @@ public class Salle {
     private String association;
     @OneToMany(mappedBy = "idSalle")
     private Set<Soiree> soireeSet;
+
+
+
 
 
 

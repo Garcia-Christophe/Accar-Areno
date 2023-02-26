@@ -1,13 +1,15 @@
 package com.services.impl;
 
 import com.dtos.SoireeDto;
+import com.entities.Billet;
+import com.entities.Concert;
 import com.entities.Salle;
 import com.entities.Soiree;
 import com.repositories.BilletRepository;
+import com.repositories.ConcertRepository;
 import com.repositories.SoireeRepository;
 import com.services.SoireeService;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 @Service("soireeService")
@@ -16,11 +18,15 @@ public class SoireeServiceImpl implements SoireeService {
 
     private final SoireeRepository soireeRepository ;
     private final BilletRepository billetRepository ;
+    private final ConcertRepository concertRepository ;
 
 
-    public SoireeServiceImpl(SoireeRepository soireeRepository, BilletRepository billetRepository) {
+
+
+    public SoireeServiceImpl(SoireeRepository soireeRepository, BilletRepository billetRepository, ConcertRepository concertRepository) {
         this.soireeRepository = soireeRepository;
         this.billetRepository = billetRepository;
+        this.concertRepository = concertRepository;
     }
 
     /**
@@ -53,7 +59,15 @@ public class SoireeServiceImpl implements SoireeService {
      */
     @Override
     public boolean deleteSoiree(int soireeId) {
+        List<Billet> billetList = billetRepository.findAll();
+        for( Billet billet : billetList)
+            if(billet.getIdSoiree().getIdSoiree()==soireeId)
+                billetRepository.delete(billet);
 
+        List<Concert> concertList = concertRepository.findAll();
+        for( Concert concert : concertList)
+            if(concert.getIdSoiree().getIdSoiree()==soireeId)
+                concertRepository.delete(concert);
         soireeRepository.deleteById(soireeId);
         return true;
 
