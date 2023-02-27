@@ -1,83 +1,81 @@
 package pojo.mongodb;
 
-import java.sql.Date;
 import java.util.Objects;
 
 public class Ressource {
-    private String url;
-    private String type;
-    private String date;
-    private String auteur;
-    private Sujets sujets;
+	private String url;
+	private String type;
+	private String date;
+	private String auteur;
+	private Sujets sujets;
 
-    public Ressource(String url, String type, String date, String auteur, Sujets sujets) {
-        this.url = url;
-        this.type = type;
-        this.date = date;
-        this.auteur = auteur;
-        this.sujets = sujets;
-    }
-    
-    public Ressource() {
-        
-    }
+	public Ressource(String url, String type, String date, String auteur, Sujets sujets) {
+		this.url = url;
+		this.type = type;
+		this.date = date;
+		this.auteur = auteur;
+		this.sujets = sujets;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public Ressource() {
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	}
 
-    public String getType() {
-        return type;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    public String getDate() {
-        return date;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public String getAuteur() {
-        return auteur;
-    }
+	public String getDate() {
+		return date;
+	}
 
-    public void setAuteur(String auteur) {
-        this.auteur = auteur;
-    }
+	public void setDate(String date) {
+		this.date = date;
+	}
 
-    public Sujets getSujets() {
-        return sujets;
-    }
+	public String getAuteur() {
+		return auteur;
+	}
 
-    public void setSujets(Sujets sujets) {
-        this.sujets = sujets;
-    }
+	public void setAuteur(String auteur) {
+		this.auteur = auteur;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(url, type, date, auteur, sujets);
-    }
+	public Sujets getSujets() {
+		return sujets;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Ressource other = (Ressource) obj;
-        return Objects.equals(url, other.url) && Objects.equals(type, other.type)
-                && Objects.equals(date, other.date) && Objects.equals(auteur, other.auteur)
-                && Objects.equals(sujets, other.sujets);
-    }
+	public void setSujets(Sujets sujets) {
+		this.sujets = sujets;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(url, type, date, auteur, sujets);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ressource other = (Ressource) obj;
+		return Objects.equals(url, other.url) && Objects.equals(type, other.type) && Objects.equals(date, other.date)
+				&& Objects.equals(auteur, other.auteur) && Objects.equals(sujets, other.sujets);
+	}
 }

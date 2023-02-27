@@ -4,79 +4,80 @@ import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 import com.mongodb.ConnectionString;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Updates;
-
-
 
 import pojo.mongodb.Ressource;
 import pojo.mongodb.Sujets;
 
 public class DaoRessources {
-	 CodecProvider pojoCodecProvider;
-	 CodecRegistry pojoCodecRegistry;
-	 ConnectionString connectionString;
-	 MongoClient mongoClient;
-	 MongoDatabase database;
-	 MongoCollection<Ressource> ressources;
-	 
+	CodecProvider pojoCodecProvider;
+	CodecRegistry pojoCodecRegistry;
+	ConnectionString connectionString;
+	MongoClient mongoClient;
+	MongoDatabase database;
+	MongoCollection<Ressource> ressources;
+
 	public DaoRessources() {
-		 pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
-	     pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+		pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
 
-	     connectionString = new ConnectionString("mongodb://obiwan.univ-brest.fr:27017");
-	     mongoClient = MongoClients.create(connectionString);
-	     database = mongoClient.getDatabase("zsorinal0").withCodecRegistry(pojoCodecRegistry);
+		connectionString = new ConnectionString("mongodb://localhost:27017");
+		mongoClient = MongoClients.create(connectionString);
+		database = mongoClient.getDatabase("local").withCodecRegistry(pojoCodecRegistry);
 
 	}
-	
-	public Ressource find(String url) {
-		ressources = database.getCollection("ressources", Ressource.class);
-    	FindIterable<Ressource> list = ressources.find(Filters.eq("url",url));
-    	for(Ressource r : list) {
-    		return r;
-    	}
-    	return null;
+
+	public List<Ressource> find(String nom) {
+		ressources = database.getCollection("accarareno", Ressource.class);
+		FindIterable<Ressource> list = ressources.find(Filters.where(
+				"for(var field in this.sujets) { if(this.sujets[field].includes(\"" + nom + "\")) { return true; }}"));
+		List<Ressource> results = new ArrayList<>();
+		for (Ressource r : list) {
+			results.add(r);
+		}
+		return results;
 	}
-	
-    public void create(String url, String type, String date, String auteur, Sujets sujets){
-    	ressources = database.getCollection("ressources", Ressource.class);
-    	FindIterable<Ressource> list = ressources.find(Filters.eq("url",url));
-    	if(list.first()==null) {
-    		Ressource r = new Ressource();
-	    	r.setUrl(url);
-	    	r.setType(type);
-	    	r.setAuteur(auteur);
-	    	r.setDate(date);
-	    	r.setSujets(sujets);
-	    	ressources.insertOne(r);
-    	}
-	    	
-	    	
-    }
 
-    public void update(String url,String type, String date, String auteur, Sujets sujets){
-    	ressources = database.getCollection("ressources", Ressource.class);
-    	FindIterable<Ressource> list = ressources.find(Filters.eq("url",url));
-    	if(list.first()==null) {
-    		ressources.updateOne(Filters.eq("url",url), Updates.set("auteur", auteur));
-    	}
-    }
+	public void create(String url, String type, String date, String auteur, Sujets sujets) {
+		ressources = database.getCollection("accarareno", Ressource.class);
+		FindIterable<Ressource> list = ressources.find(Filters.eq("url", url));
+		if (list.first() == null) {
+			Ressource r = new Ressource();
+			r.setUrl(url);
+			r.setType(type);
+			r.setAuteur(auteur);
+			r.setDate(date);
+			r.setSujets(sujets);
+			ressources.insertOne(r);
+		}
 
-    public void delete(String url){
-	     ressources = database.getCollection("ressources", Ressource.class);
-         ressources.deleteOne(Filters.eq("url",url));
-    }
-	 
-	 
+	}
+
+	public void update(String url, String type, String date, String auteur, Sujets sujets) {
+		ressources = database.getCollection("accarareno", Ressource.class);
+		FindIterable<Ressource> list = ressources.find(Filters.eq("url", url));
+		if (list.first() != null) {
+			ressources.updateOne(Filters.eq("url", url), Updates.set("auteur", auteur));
+		}
+	}
+
+	public void delete(String url) {
+		ressources = database.getCollection("accarareno", Ressource.class);
+		ressources.deleteOne(Filters.eq("url", url));
+	}
+
 }

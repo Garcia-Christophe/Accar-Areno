@@ -6,6 +6,7 @@ package pojo.mysql;
 
 import java.io.Serializable;
 import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,105 +26,105 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Soiree")
-@NamedQueries({
-    @NamedQuery(name = "Soiree.findAll", query = "SELECT s FROM Soiree s"),
-    @NamedQuery(name = "Soiree.findByIdSoiree", query = "SELECT s FROM Soiree s WHERE s.idSoiree = :idSoiree"),
-    @NamedQuery(name = "Soiree.findByNom", query = "SELECT s FROM Soiree s WHERE s.nom = :nom")})
+@NamedQueries({ @NamedQuery(name = "Soiree.findAll", query = "SELECT s FROM Soiree s"),
+		@NamedQuery(name = "Soiree.findByIdSoiree", query = "SELECT s FROM Soiree s WHERE s.idSoiree = :idSoiree"),
+		@NamedQuery(name = "Soiree.findByNom", query = "SELECT s FROM Soiree s WHERE s.nom = :nom") })
 public class Soiree implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idSoiree")
-    private Integer idSoiree;
-    @Basic(optional = false)
-    @Column(name = "nom")
-    private String nom;
-    @JoinColumn(name = "idSalle", referencedColumnName = "idSalle")
-    @ManyToOne
-    private Salle idSalle;
-    @OneToMany(mappedBy = "idSoiree")
-    private Set<Billet> billetSet;
-    @OneToMany(mappedBy = "idSoiree")
-    private Set<Concert> concertSet;
+	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Basic(optional = false)
+	@Column(name = "idSoiree")
+	private Integer idSoiree;
+	@Basic(optional = false)
+	@Column(name = "nom")
+	private String nom;
+	@JoinColumn(name = "idSalle", referencedColumnName = "idSalle")
+	@ManyToOne
+	private Salle idSalle;
+	@OneToMany(mappedBy = "idSoiree")
+	private Set<Billet> billetSet;
+	@OneToMany(mappedBy = "idSoiree")
+	private Set<Concert> concertSet;
 
-    public Soiree() {
-    	
-    }
+	public Soiree() {
 
-    public Soiree(Integer idSoiree) {
-        this.idSoiree = idSoiree;
-    }
+	}
 
-    public Soiree(Integer idSoiree, String nom) {
-        this.idSoiree = idSoiree;
-        this.nom = nom;
-    }
+	public Soiree(Integer idSoiree) {
+		this.idSoiree = idSoiree;
+	}
 
-    public Integer getIdSoiree() {
-        return idSoiree;
-    }
+	public Soiree(Integer idSoiree, String nom) {
+		this.idSoiree = idSoiree;
+		this.nom = nom;
+	}
 
-    public void setIdSoiree(Integer idSoiree) {
-        this.idSoiree = idSoiree;
-    }
+	public Integer getIdSoiree() {
+		return idSoiree;
+	}
 
-    public String getNom() {
-        return nom;
-    }
+	public void setIdSoiree(Integer idSoiree) {
+		this.idSoiree = idSoiree;
+	}
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+	public String getNom() {
+		return nom;
+	}
 
-    public Salle getIdSalle() {
-        return idSalle;
-    }
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 
-    public void setIdSalle(Salle idSalle) {
-        this.idSalle = idSalle;
-    }
+	public Salle getIdSalle() {
+		return idSalle;
+	}
 
-    public Set<Billet> getBilletSet() {
-        return billetSet;
-    }
+	public void setIdSalle(Salle idSalle) {
+		this.idSalle = idSalle;
+	}
 
-    public void setBilletSet(Set<Billet> billetSet) {
-        this.billetSet = billetSet;
-    }
+	public Set<Billet> getBilletSet() {
+		return billetSet;
+	}
 
-    public Set<Concert> getConcertSet() {
-        return concertSet;
-    }
+	public void setBilletSet(Set<Billet> billetSet) {
+		this.billetSet = billetSet;
+	}
 
-    public void setConcertSet(Set<Concert> concertSet) {
-        this.concertSet = concertSet;
-    }
+	public Set<Concert> getConcertSet() {
+		return concertSet;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idSoiree != null ? idSoiree.hashCode() : 0);
-        return hash;
-    }
+	public void setConcertSet(Set<Concert> concertSet) {
+		this.concertSet = concertSet;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Soiree)) {
-            return false;
-        }
-        Soiree other = (Soiree) object;
-        if ((this.idSoiree == null && other.idSoiree != null) || (this.idSoiree != null && !this.idSoiree.equals(other.idSoiree))) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public int hashCode() {
+		int hash = 0;
+		hash += (idSoiree != null ? idSoiree.hashCode() : 0);
+		return hash;
+	}
 
-    @Override
-    public String toString() {
-        return "data.Soiree[ idSoiree=" + idSoiree + " ]";
-    }
-    
+	@Override
+	public boolean equals(Object object) {
+		// TODO: Warning - this method won't work in the case the id fields are not set
+		if (!(object instanceof Soiree)) {
+			return false;
+		}
+		Soiree other = (Soiree) object;
+		if ((this.idSoiree == null && other.idSoiree != null)
+				|| (this.idSoiree != null && !this.idSoiree.equals(other.idSoiree))) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "data.Soiree[ idSoiree=" + idSoiree + " ]";
+	}
+
 }

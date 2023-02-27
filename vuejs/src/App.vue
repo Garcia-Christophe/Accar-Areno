@@ -2,7 +2,8 @@
   <nav>
     <router-link to="/">Accueil</router-link> |
     <router-link to="/groupes">Groupes</router-link> |
-    <router-link to="/artistes">Artistes</router-link>
+    <router-link to="/artistes">Artistes</router-link> |
+    <router-link to="/ressources">Ressources</router-link>
   </nav>
   <router-view />
 </template>

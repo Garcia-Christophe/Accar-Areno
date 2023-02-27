@@ -7,6 +7,7 @@ package pojo.mysql;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,134 +25,134 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Salle")
-@NamedQueries({
-    @NamedQuery(name = "Salle.findAll", query = "SELECT s FROM Salle s"),
-    @NamedQuery(name = "Salle.findByIdSalle", query = "SELECT s FROM Salle s WHERE s.idSalle = :idSalle"),
-    @NamedQuery(name = "Salle.findByNom", query = "SELECT s FROM Salle s WHERE s.nom = :nom"),
-    @NamedQuery(name = "Salle.findByAdresse", query = "SELECT s FROM Salle s WHERE s.adresse = :adresse"),
-    @NamedQuery(name = "Salle.findByCapacite", query = "SELECT s FROM Salle s WHERE s.capacite = :capacite"),
-    @NamedQuery(name = "Salle.findByNomGest", query = "SELECT s FROM Salle s WHERE s.nomGest = :nomGest"),
-    @NamedQuery(name = "Salle.findByPrenomGest", query = "SELECT s FROM Salle s WHERE s.prenomGest = :prenomGest"),
-    @NamedQuery(name = "Salle.findByAssociation", query = "SELECT s FROM Salle s WHERE s.association = :association")})
+@NamedQueries({ @NamedQuery(name = "Salle.findAll", query = "SELECT s FROM Salle s"),
+		@NamedQuery(name = "Salle.findByIdSalle", query = "SELECT s FROM Salle s WHERE s.idSalle = :idSalle"),
+		@NamedQuery(name = "Salle.findByNom", query = "SELECT s FROM Salle s WHERE s.nom = :nom"),
+		@NamedQuery(name = "Salle.findByAdresse", query = "SELECT s FROM Salle s WHERE s.adresse = :adresse"),
+		@NamedQuery(name = "Salle.findByCapacite", query = "SELECT s FROM Salle s WHERE s.capacite = :capacite"),
+		@NamedQuery(name = "Salle.findByNomGest", query = "SELECT s FROM Salle s WHERE s.nomGest = :nomGest"),
+		@NamedQuery(name = "Salle.findByPrenomGest", query = "SELECT s FROM Salle s WHERE s.prenomGest = :prenomGest"),
+		@NamedQuery(name = "Salle.findByAssociation", query = "SELECT s FROM Salle s WHERE s.association = :association") })
 public class Salle implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idSalle")
-    private Integer idSalle;
-    @Column(name = "nom")
-    private String nom;
-    @Column(name = "adresse")
-    private String adresse;
-    @Column(name = "capacite")
-    private Integer capacite;
-    @Column(name = "nomGest")
-    private String nomGest;
-    @Column(name = "prenomGest")
-    private String prenomGest;
-    @Column(name = "association")
-    private String association;
-    @OneToMany(mappedBy = "idSalle")
-    private Set<Soiree> soireeSet;
+	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Basic(optional = false)
+	@Column(name = "idSalle")
+	private Integer idSalle;
+	@Column(name = "nom")
+	private String nom;
+	@Column(name = "adresse")
+	private String adresse;
+	@Column(name = "capacite")
+	private Integer capacite;
+	@Column(name = "nomGest")
+	private String nomGest;
+	@Column(name = "prenomGest")
+	private String prenomGest;
+	@Column(name = "association")
+	private String association;
+	@OneToMany(mappedBy = "idSalle")
+	private Set<Soiree> soireeSet;
 
-    public Salle() {
-    	soireeSet = new HashSet<Soiree>();
-    }
+	public Salle() {
+		soireeSet = new HashSet<Soiree>();
+	}
 
 //    public Salle(Integer idSalle) {
 //        this.idSalle = idSalle;
 //        soireeSet = new HashSet<Soiree>();
 //    }
 
-    public Integer getIdSalle() {
-        return idSalle;
-    }
+	public Integer getIdSalle() {
+		return idSalle;
+	}
 
-    public void setIdSalle(Integer idSalle) {
-        this.idSalle = idSalle;
-    }
+	public void setIdSalle(Integer idSalle) {
+		this.idSalle = idSalle;
+	}
 
-    public String getNom() {
-        return nom;
-    }
+	public String getNom() {
+		return nom;
+	}
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 
-    public String getAdresse() {
-        return adresse;
-    }
+	public String getAdresse() {
+		return adresse;
+	}
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
+	}
 
-    public Integer getCapacite() {
-        return capacite;
-    }
+	public Integer getCapacite() {
+		return capacite;
+	}
 
-    public void setCapacite(Integer capacite) {
-        this.capacite = capacite;
-    }
+	public void setCapacite(Integer capacite) {
+		this.capacite = capacite;
+	}
 
-    public String getNomGest() {
-        return nomGest;
-    }
+	public String getNomGest() {
+		return nomGest;
+	}
 
-    public void setNomGest(String nomGest) {
-        this.nomGest = nomGest;
-    }
+	public void setNomGest(String nomGest) {
+		this.nomGest = nomGest;
+	}
 
-    public String getPrenomGest() {
-        return prenomGest;
-    }
+	public String getPrenomGest() {
+		return prenomGest;
+	}
 
-    public void setPrenomGest(String prenomGest) {
-        this.prenomGest = prenomGest;
-    }
+	public void setPrenomGest(String prenomGest) {
+		this.prenomGest = prenomGest;
+	}
 
-    public String getAssociation() {
-        return association;
-    }
+	public String getAssociation() {
+		return association;
+	}
 
-    public void setAssociation(String association) {
-        this.association = association;
-    }
+	public void setAssociation(String association) {
+		this.association = association;
+	}
 
-    public Set<Soiree> getSoireeSet() {
-        return soireeSet;
-    }
+	public Set<Soiree> getSoireeSet() {
+		return soireeSet;
+	}
 
-    public void setSoireeSet(Set<Soiree> soireeSet) {
-        this.soireeSet = soireeSet;
-    }
+	public void setSoireeSet(Set<Soiree> soireeSet) {
+		this.soireeSet = soireeSet;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idSalle != null ? idSalle.hashCode() : 0);
-        return hash;
-    }
+	@Override
+	public int hashCode() {
+		int hash = 0;
+		hash += (idSalle != null ? idSalle.hashCode() : 0);
+		return hash;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Salle)) {
-            return false;
-        }
-        Salle other = (Salle) object;
-        if ((this.idSalle == null && other.idSalle != null) || (this.idSalle != null && !this.idSalle.equals(other.idSalle))) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object object) {
+		// TODO: Warning - this method won't work in the case the id fields are not set
+		if (!(object instanceof Salle)) {
+			return false;
+		}
+		Salle other = (Salle) object;
+		if ((this.idSalle == null && other.idSalle != null)
+				|| (this.idSalle != null && !this.idSalle.equals(other.idSalle))) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public String toString() {
-        return "data.Salle[ idSalle=" + idSalle + " ]";
-    }
-    
+	@Override
+	public String toString() {
+		return "data.Salle[ idSalle=" + idSalle + " ]";
+	}
+
 }
