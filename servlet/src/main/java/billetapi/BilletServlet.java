@@ -2,6 +2,7 @@ package billetapi;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.List;
 
 import dao.mysql.BilletDAO;
@@ -15,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import pojo.mysql.Artiste;
 import pojo.mysql.Billet;
 import pojo.mysql.Groupe;
 import pojo.mysql.Soiree;
@@ -64,9 +66,11 @@ public class BilletServlet extends HttpServlet {
 			Utilisateur u = daoUtilisateur.find(Integer.valueOf(idUtilisateur));
 			json = "{\"status\": \"OK\",\"message\":\"" + u.getBilletSet().size()
 					+ " groupe(s) correspondant(s).\",\"data\":[";
-			for (Billet b : u.getBilletSet()) {
+			Iterator<Billet> it1 = u.getBilletSet().iterator();
+			while (it1.hasNext()) {
+				Billet b = it1.next();
 				json += this.getJsonBillet(b);
-				if (!b.equals(((List<Billet>) u.getBilletSet()).get(u.getBilletSet().size() - 1))) {
+				if (it1.hasNext()) {
 					json += ',';
 				}
 			}
@@ -150,17 +154,17 @@ public class BilletServlet extends HttpServlet {
 			}
 		} else {
 			erreur = true;
-			json += "\"message\":\"L'identifiant de la soirée doit être renseigné.\",";
+			json += "\"message\":\"L'identifiant de la soirï¿½e doit ï¿½tre renseignï¿½.\",";
 		}
 
-		// Récupérationde la soirée
+		// Rï¿½cupï¿½rationde la soirï¿½e
 		if (!erreur) {
 			try {
 				s = daoSoiree.find(Integer.valueOf(idSoiree));
 			} catch (DAOException e) {
 				e.printStackTrace();
 				erreur = true;
-				json += "\"message\":\"Aucune soirée correspondante.\",";
+				json += "\"message\":\"Aucune soirï¿½e correspondante.\",";
 			}
 		}
 
@@ -175,22 +179,22 @@ public class BilletServlet extends HttpServlet {
 			}
 		} else {
 			erreur = true;
-			json += "\"message\":\"L'identifiant de l'utilisateur doit être renseigné.\",";
+			json += "\"message\":\"L'identifiant de l'utilisateur doit ï¿½tre renseignï¿½.\",";
 		}
 
-		// Récupération de l'utilisateur
+		// Rï¿½cupï¿½ration de l'utilisateur
 		if (!erreur) {
 			try {
 				u = daoUtilisateur.find(Integer.valueOf(idUtilisateur));
 			} catch (DAOException e) {
 				e.printStackTrace();
 				erreur = true;
-				json += "\"message\":\"Aucune soirée correspondante.\",";
+				json += "\"message\":\"Aucune soirï¿½e correspondante.\",";
 			}
 		}
 
 		// CrÃ©ation du Billet
-		if (!erreur) {
+		if (!erreur && prix != null) {
 			Billet b = new Billet();
 			b.setPrix(Integer.valueOf(prix));
 			b.setIdSoiree(s);
@@ -204,6 +208,9 @@ public class BilletServlet extends HttpServlet {
 				erreur = true;
 				json += "\"message\":\"Impossible de crÃ©er le billet.\",";
 			}
+		} else {
+			erreur = true;
+			json += "\"message\":\"Le prix doit ï¿½tre renseignï¿½.\",";
 		}
 
 		// DÃ©finition de l'Ã©tat du status
@@ -272,7 +279,7 @@ public class BilletServlet extends HttpServlet {
 
 		// Si le billet est retrouvÃ© dans la base de donnÃ©es, alors on procÃ¨de Ã  sa
 		// Ã©ventuelle modification
-		if (!erreur && b != null) {
+		if (!erreur && b != null && prix != null) {
 			b.setPrix(Integer.valueOf(prix));
 
 			// Modification de l'artiste dans la base de donnÃ©es
@@ -283,6 +290,9 @@ public class BilletServlet extends HttpServlet {
 				erreur = true;
 				json += "\"message\":\"Impossible de modifier le billet.\",";
 			}
+		} else {
+			erreur = true;
+			json += "\"message\":\"Le prix doit ï¿½tre renseignï¿½.\",";
 		}
 
 		// DÃ©finition de l'Ã©tat du status
@@ -298,7 +308,7 @@ public class BilletServlet extends HttpServlet {
 		// Fermeture de writer
 		out.close();
 	}
-	
+
 	/**
 	 * @see HttpServlet#doDelete(HttpServletRequest request, HttpServletResponse
 	 *      response)
