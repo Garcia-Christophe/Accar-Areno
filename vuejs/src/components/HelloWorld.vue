@@ -33,4 +33,7 @@ a {
 #titre-accueil {
   color: #daae6b;
 }
+td {
+  max-width: 200px;
+}
 </style>
