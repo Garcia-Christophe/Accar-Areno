@@ -19,4 +19,24 @@
     <servlet-name>ArtisteServlet</servlet-name>
     <url-pattern>/ArtisteServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>BilletServlet</display-name>
+    <servlet-name>BilletServlet</servlet-name>
+    <servlet-class>billetapi.BilletServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BilletServlet</servlet-name>
+    <url-pattern>/BilletServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UtilisateurServlet</display-name>
+    <servlet-name>UtilisateurServlet</servlet-name>
+    <servlet-class>billetapi.UtilisateurServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UtilisateurServlet</servlet-name>
+    <url-pattern>/UtilisateurServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
