@@ -82,6 +82,7 @@ export default {
         idGroupe: null,
       },
       artisteSelectionne: null,
+      url: "http://localhost:8079/accarareno/artistes",
     };
   },
   mounted() {
@@ -90,7 +91,7 @@ export default {
   methods: {
     getArtistes() {
       axios
-        .get("http://localhost:8080/accarareno/artistes")
+        .get(this.url)
         .then((response) => {
           console.log(response);
           document.getElementById("status").innerHTML =
@@ -104,7 +105,7 @@ export default {
         });
     },
     addArtiste() {
-      let link = "http://localhost:8080/accarareno/artistes?";
+      let link = this.url + "?";
       let unChangement = false;
       if (this.nouvelArtiste.nom != null) {
         link += "nom=" + this.nouvelArtiste.nom;
@@ -153,10 +154,7 @@ export default {
       this.artisteSelectionne = artiste;
     },
     updateArtiste() {
-      let link =
-        "http://localhost:8080/accarareno/artistes?id=" +
-        this.artisteSelectionne.idArtiste +
-        "&";
+      let link = this.url + "?id=" + this.artisteSelectionne.idArtiste + "&";
       let unChangement = false;
       if (this.artisteSelectionne.nom != null) {
         link += "nom=" + this.artisteSelectionne.nom;
@@ -198,9 +196,7 @@ export default {
     },
     deleteArtiste(artiste) {
       axios
-        .delete(
-          "http://localhost:8080/accarareno/artistes?id=" + artiste.idArtiste
-        )
+        .delete(this.url + "?id=" + artiste.idArtiste)
         .then((response) => {
           document.getElementById("status").innerHTML =
             "Status : " + response.data.status;

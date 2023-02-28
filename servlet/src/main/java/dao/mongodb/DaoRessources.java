@@ -10,6 +10,7 @@ import java.util.List;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.conversions.Bson;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.client.FindIterable;
@@ -21,7 +22,6 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
 import pojo.mongodb.Ressource;
-import pojo.mongodb.Sujets;
 
 public class DaoRessources {
 	CodecProvider pojoCodecProvider;
@@ -38,10 +38,15 @@ public class DaoRessources {
 		connectionString = new ConnectionString("mongodb://localhost:27017");
 		mongoClient = MongoClients.create(connectionString);
 		database = mongoClient.getDatabase("local").withCodecRegistry(pojoCodecRegistry);
-
 	}
 
-	public List<Ressource> find(String nom) {
+	public Ressource findByUrl(String url) {
+		ressources = database.getCollection("accarareno", Ressource.class);
+		FindIterable<Ressource> list = ressources.find(Filters.eq("url", url));
+		return list.first();
+	}
+
+	public List<Ressource> findByName(String nom) {
 		ressources = database.getCollection("accarareno", Ressource.class);
 		FindIterable<Ressource> list = ressources.find(Filters.where(
 				"for(var field in this.sujets) { if(this.sujets[field].includes(\"" + nom + "\")) { return true; }}"));
@@ -52,26 +57,26 @@ public class DaoRessources {
 		return results;
 	}
 
-	public void create(String url, String type, String date, String auteur, Sujets sujets) {
+	public void create(Ressource ressource) {
 		ressources = database.getCollection("accarareno", Ressource.class);
-		FindIterable<Ressource> list = ressources.find(Filters.eq("url", url));
-		if (list.first() == null) {
-			Ressource r = new Ressource();
-			r.setUrl(url);
-			r.setType(type);
-			r.setAuteur(auteur);
-			r.setDate(date);
-			r.setSujets(sujets);
-			ressources.insertOne(r);
+		if (this.findByUrl(ressource.getUrl()) == null) {
+			ressources.insertOne(ressource);
 		}
-
 	}
 
-	public void update(String url, String type, String date, String auteur, Sujets sujets) {
+	public void update(Ressource ressource, String previousUrl) {
 		ressources = database.getCollection("accarareno", Ressource.class);
-		FindIterable<Ressource> list = ressources.find(Filters.eq("url", url));
+		FindIterable<Ressource> list = ressources.find(Filters.eq("url", previousUrl));
 		if (list.first() != null) {
-			ressources.updateOne(Filters.eq("url", url), Updates.set("auteur", auteur));
+			Bson filtre = Filters.eq("url", previousUrl);
+			ressources.updateOne(filtre, Updates.set("auteur", ressource.getAuteur()));
+			ressources.updateOne(filtre, Updates.set("type", ressource.getType()));
+			ressources.updateOne(filtre, Updates.set("date", ressource.getDate()));
+			ressources.updateOne(filtre, Updates.set("sujets.groupe", ressource.getSujets().getGroupe()));
+			ressources.updateOne(filtre, Updates.set("sujets.concert", ressource.getSujets().getConcert()));
+			ressources.updateOne(filtre, Updates.set("sujets.soiree", ressource.getSujets().getSoiree()));
+			ressources.updateOne(filtre, Updates.set("sujets.salle", ressource.getSujets().getSalle()));
+			ressources.updateOne(filtre, Updates.set("url", ressource.getUrl()));
 		}
 	}
 

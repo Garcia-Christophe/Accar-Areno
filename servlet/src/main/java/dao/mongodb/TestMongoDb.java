@@ -13,7 +13,7 @@ public class TestMongoDb {
 
 		MongoCollection<Ressource> ressources = dao.database.getCollection("accarareno", Ressource.class);
 
-		List<Ressource> liste = dao.find("Groupe 2");
+		List<Ressource> liste = dao.findByName("Groupe 2");
 
 		System.out.println(liste);
 
