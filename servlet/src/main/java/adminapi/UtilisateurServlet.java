@@ -1,34 +1,32 @@
-package billetapi;
+package adminapi;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Iterator;
-
-import dao.mysql.BilletDAO;
-import dao.mysql.DAO;
-import dao.mysql.DAOException;
-import dao.mysql.SoireeDAO;
-import dao.mysql.UtilisateurDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import pojo.mysql.Billet;
-import pojo.mysql.Soiree;
 import pojo.mysql.Utilisateur;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.List;
+
+import dao.mysql.DAO;
+import dao.mysql.DAOException;
+import dao.mysql.UtilisateurDAO;
+
 /**
- * Servlet implementation class BilletServlet
+ * Servlet implementation class UtilisateurServlet
  */
-@WebServlet("/billets")
-public class BilletServlet extends HttpServlet {
+@WebServlet("/utilisateurs")
+public class UtilisateurServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public BilletServlet() {
+	public UtilisateurServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -37,7 +35,7 @@ public class BilletServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Prédéfinition de la réponse HTTP à retourner
@@ -52,29 +50,38 @@ public class BilletServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 
 		// Récupération des paramètres
-		String idUtilisateur = request.getParameter("idUtilisateur");
+		String id = request.getParameter("id");
 
 		// Préparation du json à renvoyer
 		String json = "";
 
+		// Création du DAO Utilisateur
+		DAO<Utilisateur> daoUtilisateur = null;
 		try {
-			DAO<Utilisateur> daoUtilisateur = new UtilisateurDAO();
-			Utilisateur u = daoUtilisateur.find(Integer.valueOf(idUtilisateur));
-			json = "{\"status\": \"OK\",\"message\":\"" + u.getBilletSet().size()
-					+ " billet(s) correspondant(s).\",\"data\":[";
-			Iterator<Billet> it1 = u.getBilletSet().iterator();
-			while (it1.hasNext()) {
-				Billet b = it1.next();
-				json += this.getJsonBillet(b);
-				if (it1.hasNext()) {
-					json += ',';
+			daoUtilisateur = new UtilisateurDAO();
+			if (id != null) {
+				// Le client cherche un unique utilisateur
+				Utilisateur u = daoUtilisateur.find(Integer.valueOf(id));
+				json = "{\"status\": \"OK\",\"message\":\"1 utilisateur(s) correspondant(s).\",\"data\":";
+				json += this.getJsonUtilisateur(u);
+				json += "}";
+			} else {
+				// Le client cherche tous les utilisateurs
+				@SuppressWarnings("unchecked")
+				List<Utilisateur> listUtilisateurs = (List<Utilisateur>) daoUtilisateur.findAll();
+				json = "{\"status\": \"OK\",\"message\":\"" + listUtilisateurs.size()
+						+ " utilisateurs(s) correspondant(s).\",\"data\":[";
+				for (Utilisateur u : listUtilisateurs) {
+					json += this.getJsonUtilisateur(u);
+					if (!u.equals(listUtilisateurs.get(listUtilisateurs.size() - 1))) {
+						json += ',';
+					}
 				}
+				json += "]}";
 			}
-			json += "]}";
-
 		} catch (DAOException e) {
 			e.printStackTrace();
-			json = "{\"status\": \"KO\",\"message\":\"Aucun billet correspondant.\",\"data\":{}";
+			json = "{\"status\": \"KO\",\"message\":\"Aucun utilisateur correspondant.\",\"data\":{}";
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			json = "{\"status\": \"KO\",\"message\":\"L'identifiant doit être un entier.\",\"data\":{}";
@@ -85,16 +92,20 @@ public class BilletServlet extends HttpServlet {
 
 		// Fermeture de writer
 		out.close();
-
 	}
 
-	private String getJsonBillet(Billet b) {
+	/**
+	 * Crée un objet Json représentant un utilisateur.
+	 * 
+	 * @param a l'utilisateur à représenter
+	 * @return l'équivalent de l'utilisateur en objet Json
+	 */
+	private String getJsonUtilisateur(Utilisateur u) {
 		String json = "";
 		json += "{";
-		json += "\"idBillet\":" + b.getIdBillet() + ",";
-		json += "\"prix\":\"" + b.getPrix() + "\",";
-		json += "\"nomSoiree\":\"" + b.getIdSoiree().getNom() + "\",";
-		json += "\"nomUtilisateur\":\"" + b.getIdUtilisateur().getNom() + "\"";
+		json += "\"idUtilisateur\":" + u.getIdUtilisateur() + ",";
+		json += "\"mdp\":\"" + u.getMdp() + "\",";
+		json += "\"nom\":\"" + u.getNom()+"\"";
 		json += "}";
 		return json;
 	}
@@ -103,6 +114,7 @@ public class BilletServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Prédéfinition de la réponse HTTP à retourner
@@ -120,104 +132,56 @@ public class BilletServlet extends HttpServlet {
 		String json = "{";
 
 		// Récupération des paramètres
-		String prix = request.getParameter("prix");
-		String idSoiree = request.getParameter("idSoiree");
-		String idUtilisateur = request.getParameter("idUtilisateur");
+		String nom = request.getParameter("nom");
+		String mdp = request.getParameter("mdp");
 
-		// Création du DAO billet
 		boolean erreur = false;
-		DAO<Billet> daoBillet = null;
-		DAO<Soiree> daoSoiree = null;
-		DAO<Utilisateur> daoUtilisateur = null;
-		Utilisateur u = null;
-		Soiree s = null;
-		try {
-			daoBillet = new BilletDAO();
-		} catch (DAOException e) {
-			e.printStackTrace();
+		if (nom != null) {
+			if (nom.equals("admin")) {
+				erreur = true;
+				json += "\"message\":\"Impossible d'ajouter l'utilisateur admin.\",";
+			}
+		} else {
 			erreur = true;
-			json += "\"message\":\"Impossible de créer le DAO Billet.\",";
+			json += "\"message\":\"Le nom doit être renseigné.\",";
 		}
 
-		// Création du DAO Soiree
-		if (!erreur) {
-			if (idSoiree != null) {
-				try {
-					daoSoiree = new SoireeDAO();
-				} catch (DAOException e) {
-					e.printStackTrace();
-					erreur = true;
-					json += "\"message\":\"Impossible de créer le DAO Soiree.\",";
-				}
-			} else {
-				erreur = true;
-				json += "\"message\":\"L'identifiant de la soir�e doit �tre renseign�.\",";
-			}
-		}
-
-		// R�cup�rationde la soir�e
-		if (!erreur) {
-			try {
-				s = daoSoiree.find(Integer.valueOf(idSoiree));
-			} catch (DAOException e) {
-				e.printStackTrace();
-				erreur = true;
-				json += "\"message\":\"Aucune soir�e correspondante.\",";
-			}
+		if (!erreur && mdp == null) {
+			erreur = true;
+			json += "\"message\":\"Le mot de passe doit être renseigné.\",";
 		}
 
 		// Création du DAO Utilisateur
-		if (!erreur) {
-			if (idUtilisateur != null) {
-				try {
-					daoUtilisateur = new UtilisateurDAO();
-				} catch (DAOException e) {
-					e.printStackTrace();
-					erreur = true;
-					json += "\"message\":\"Impossible de créer le DAO Utilisateur.\",";
-				}
-			} else {
-				erreur = true;
-				json += "\"message\":\"L'identifiant de l'utilisateur doit �tre renseign�.\",";
-			}
-		}
-
-		// R�cup�ration de l'utilisateur
+		DAO<Utilisateur> daoUtilisateur = null;
 		if (!erreur) {
 			try {
-				u = daoUtilisateur.find(Integer.valueOf(idUtilisateur));
+				daoUtilisateur = new UtilisateurDAO();
 			} catch (DAOException e) {
 				e.printStackTrace();
 				erreur = true;
-				json += "\"message\":\"Aucune soir�e correspondante.\",";
+				json += "\"message\":\"Impossible de créer le DAO Utilisateur.\",";
 			}
 		}
 
-		// Création du Billet
+		// Création de l'utilisateur
 		if (!erreur) {
-			if (prix != null) {
-				Billet b = new Billet();
-				b.setPrix(Integer.valueOf(prix));
-				b.setIdSoiree(s);
-				b.setIdUtilisateur(u);
+			Utilisateur u = new Utilisateur();
+			u.setNom(nom);
+			u.setMdp(mdp);
 
-				// Ajout du billet dans la base de données
-				try {
-					daoBillet.create(b);
-				} catch (DAOException e) {
-					e.printStackTrace();
-					erreur = true;
-					json += "\"message\":\"Impossible de créer le billet.\",";
-				}
-			} else {
+			// Ajout de l'utilisateur dans la base de données
+			try {
+				daoUtilisateur.create(u);
+			} catch (DAOException e) {
+				e.printStackTrace();
 				erreur = true;
-				json += "\"message\":\"Le prix doit �tre renseign�.\",";
+				json += "\"message\":\"Impossible de créer l'utilisateur.\",";
 			}
 		}
 
 		// Définition de l'état du status
 		if (!erreur) {
-			json += "\"status\":\"OK\", \"message\":\"Billet ajouté.\", \"data\":{}}";
+			json += "\"status\":\"OK\", \"message\":\"Utilisateur ajouté.\", \"data\":{}}";
 		} else {
 			json += "\"status\":\"KO\", \"data\":{}}";
 		}
@@ -252,54 +216,70 @@ public class BilletServlet extends HttpServlet {
 
 		// Récupération des paramètres
 		String id = request.getParameter("id");
-		String prix = request.getParameter("prix");
+		String nom = request.getParameter("nom");
+		String mdp = request.getParameter("mdp");
 
-		// Création du DAO Billet
 		boolean erreur = false;
-		DAO<Billet> daoBillet = null;
-		try {
-			daoBillet = new BilletDAO();
-		} catch (DAOException e) {
-			e.printStackTrace();
-			erreur = true;
-			json += "\"message\":\"Impossible de créer le DAO Billet.\",";
+		if (nom != null) {
+			if (nom.equals("admin")) {
+				erreur = true;
+				json += "\"message\":\"Impossible de modifier le nom l'utilisateur admin.\",";
+			}
+		}
+		// Création du DAO Utilisteur
+		DAO<Utilisateur> daoUtilisateur = null;
+		if (!erreur) {
+			try {
+				daoUtilisateur = new UtilisateurDAO();
+			} catch (DAOException e) {
+				e.printStackTrace();
+				erreur = true;
+				json += "\"message\":\"Impossible de créer le DAO Utilisateur.\",";
+			}
 		}
 
-		// Si un id a été fourni en paramètre, alors on tente de récupérer le
-		// billet
+		// Si un id a été fourni en paramètre, alors on tente de récupérer l'utilisateur
 		// correspondant
-		Billet b = null;
+		Utilisateur u = null;
 		if (!erreur && id != null) {
 			try {
-				b = daoBillet.find(Integer.valueOf(id));
+				u = daoUtilisateur.find(Integer.valueOf(id));
 			} catch (DAOException e) {
 				e.printStackTrace();
 				erreur = true;
-				json += "\"message\":\"Aucun billet correspondant.\",";
+				json += "\"message\":\"Aucun utilisateur correspondant.\",";
 			}
 		}
 
-		// Si le billet est retrouvé dans la base de données, alors on procède à sa
+		// Si l'utilisateur est retrouvé dans la base de données, alors on procède à sa
 		// éventuelle modification
-		if (!erreur && b != null && prix != null) {
-			b.setPrix(Integer.valueOf(prix));
+		if (!erreur && u != null) {
 
-			// Modification du billet dans la base de données
-			try {
-				daoBillet.update(b);
-			} catch (DAOException e) {
-				e.printStackTrace();
-				erreur = true;
-				json += "\"message\":\"Impossible de modifier le billet.\",";
+			if (nom != null) {
+				u.setNom(nom);
+
 			}
-		} else {
-			erreur = true;
-			json += "\"message\":\"Le prix doit �tre renseign�.\",";
+			if (!erreur && mdp != null) {
+				u.setMdp(mdp);
+			}
+
+			// Modification de l'utilisateur dans la base de données
+			if (!erreur) {
+				try {
+					daoUtilisateur.update(u);
+				} catch (DAOException e) {
+					e.printStackTrace();
+					erreur = true;
+					json += "\"message\":\"Impossible de modifier l'utilisateur.\",";
+				}
+			}
 		}
 
 		// Définition de l'état du status
-		if (!erreur) {
-			json += "\"status\":\"OK\", \"message\":\"Bilet modifié.\", \"data\":{}}";
+		if (!erreur)
+
+		{
+			json += "\"status\":\"OK\", \"message\":\"Utilisateur modifié.\", \"data\":{}}";
 		} else {
 			json += "\"status\":\"KO\", \"data\":{}}";
 		}
@@ -335,44 +315,49 @@ public class BilletServlet extends HttpServlet {
 		// Récupération des paramètres
 		String id = request.getParameter("id");
 
-		// Création du DAO Billet
+		// Création du DAO Utilisateur
 		boolean erreur = false;
-		DAO<Billet> daoBillet = null;
+		DAO<Utilisateur> daoUtilisateur = null;
 		try {
-			daoBillet = new BilletDAO();
+			daoUtilisateur = new UtilisateurDAO();
 		} catch (DAOException e) {
 			e.printStackTrace();
 			erreur = true;
-			json += "\"message\":\"Impossible de créer le DAO Billet.\",";
+			json += "\"message\":\"Impossible de créer le DAO Utilisateur.\",";
 		}
 
-		// Si un id a été fourni en paramètre, alors on tente de récupérer le billet
+		// Si un id a été fourni en paramètre, alors on tente de récupérer l'utilisateur
 		// correspondant
-		Billet b = null;
+		Utilisateur u = null;
 		if (!erreur && id != null) {
 			try {
-				b = daoBillet.find(Integer.valueOf(id));
+				u = daoUtilisateur.find(Integer.valueOf(id));
 			} catch (DAOException e) {
 				e.printStackTrace();
 				erreur = true;
-				json += "\"message\":\"Aucun billet correspondant.\",";
+				json += "\"message\":\"Aucun utilisateur correspondant.\",";
 			}
 		}
 
-		// Si le billet est retrouvé dans la base de données, alors on le supprime
-		if (!erreur && b != null) {
+		// Si l'utilisateur est retrouvé dans la base de données, alors on le supprime
+		if (!erreur && u != null) {
 			try {
-				daoBillet.delete(b);
+				if (!u.getNom().equals("admin")) {
+					daoUtilisateur.delete(u);
+				} else {
+					erreur = true;
+					json += "\"message\":\"Impossible de supprimer l'utilisateur admin.\",";
+				}
 			} catch (DAOException e) {
 				e.printStackTrace();
 				erreur = true;
-				json += "\"message\":\"Impossible de supprimer le billet.\",";
+				json += "\"message\":\"Impossible de supprimer l'utilisateur.\",";
 			}
 		}
 
 		// Définition de l'état du status
 		if (!erreur) {
-			json += "\"status\":\"OK\", \"message\":\"Billet supprimé.\", \"data\":{}}";
+			json += "\"status\":\"OK\", \"message\":\"Utilisateur supprimé.\", \"data\":{}}";
 		} else {
 			json += "\"status\":\"KO\", \"data\":{}}";
 		}
