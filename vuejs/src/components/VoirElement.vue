@@ -142,7 +142,7 @@ export default {
           console.log(error);
         });
     } else if (this.el.type === "utilisateur") {
-      // affiche le nom de la salle où a lieu la soirée
+      // affiche les billets de l'utilisateur
       let url2 = url + "billets";
       axios
         .get(url2)

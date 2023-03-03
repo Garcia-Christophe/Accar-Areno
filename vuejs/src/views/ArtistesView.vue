@@ -22,14 +22,18 @@
           <td>{{ artiste.dateNaissance }}</td>
           <td>{{ artiste.idGroupe }}</td>
           <td>
-            <button  v-if="isLoggedInAdmin" @click="editArtiste(artiste)">Modifier</button>
-            <button  v-if="isLoggedInAdmin" @click="deleteArtiste(artiste)">Supprimer</button>
-            <button @click="artisteVu = artiste">Voir</button>
+            <button v-if="isLoggedInAdmin" @click="editArtiste(artiste)">
+              Modifier
+            </button>
+            <button v-if="isLoggedInAdmin" @click="deleteArtiste(artiste)">
+              Supprimer
+            </button>
+            <button @click="artisteVu = artiste">Voir plus</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div  v-if="isLoggedInAdmin">
+    <div v-if="isLoggedInAdmin">
       <h2>Ajouter un artiste</h2>
       <form @submit.prevent="addArtiste">
         <label>Nom :</label>
@@ -147,13 +151,13 @@ export default {
             "Status : " + response.data.status;
           document.getElementById("message").innerHTML =
             "Message : " + response.data.message;
-          this.getArtistes();
           this.nouvelArtiste = {
             nom: null,
             villeOrigine: null,
             dateNaissance: null,
             idGroupe: null,
           };
+          this.getArtistes();
         })
         .catch((error) => {
           console.log(error);
@@ -197,7 +201,6 @@ export default {
           document.getElementById("message").innerHTML =
             "Message : " + response.data.message;
           this.artisteSelectionne = null;
-          this.getArtistes();
         })
         .catch((error) => {
           console.log(error);
@@ -218,15 +221,15 @@ export default {
         });
     },
     isLoginAdmin() {
-        // Récupérez le nom d'utilisateur dans le stockage local du navigateur
-        const username = localStorage.getItem('nom');
-        // Vérifiez si l'utilisateur est connecté
-        if (username==="admin") {
-            this.isLoggedInAdmin = true;
-        }else{
-            this.isLoggedInAdmin = false;
-        }
-        console.log(this.isLoggedInAdmin);
+      // Récupérez le nom d'utilisateur dans le stockage local du navigateur
+      const username = localStorage.getItem("nom");
+      // Vérifiez si l'utilisateur est connecté
+      if (username === "admin") {
+        this.isLoggedInAdmin = true;
+      } else {
+        this.isLoggedInAdmin = false;
+      }
+      console.log(this.isLoggedInAdmin);
     },
   },
   components: { VoirElement },

@@ -1,141 +1,191 @@
 <template>
-  <div class="concerts">
-    <h1>Liste des concerts</h1>
+  <div class="salles">
+    <h1>Liste des salles</h1>
     <p id="status"></p>
     <p id="message"></p>
     <table>
       <thead>
         <tr>
-          <th>IdGroupe</th>
+          <th>IdSalle</th>
           <th>Nom</th>
-          <th>NbArtistes</th>
+          <th>Adresse</th>
+          <th>Capacité</th>
+          <th>NomGestionnaire</th>
+          <th>PrénomGestionnaire</th>
+          <th>Association</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="groupe in groupes" :key="groupe.idGroupe">
-          <td>{{ groupe.idGroupe }}</td>
-          <td>{{ groupe.nom }}</td>
-          <td>{{ groupe.nbArtistes }}</td>
+        <tr v-for="salle in salles" :key="salle.idSalle">
+          <td>{{ salle.idSalle }}</td>
+          <td>{{ salle.nom }}</td>
+          <td>{{ salle.adresse }}</td>
+          <td>{{ salle.capacite }}</td>
+          <td>{{ salle.nomGest }}</td>
+          <td>{{ salle.prenomGest }}</td>
+          <td>{{ salle.association }}</td>
           <td>
-            <button @click="editGroupe(groupe)">Modifier</button>
-            <button @click="deleteGroupe(groupe)">Supprimer</button>
+            <button @click="editSalle(salle)">Modifier</button>
+            <button @click="deleteSalle(salle)">Supprimer</button>
+            <button @click="salleVue = salle">Voir plus</button>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
-      <h2>Ajouter un groupe</h2>
-      <form @submit.prevent="addGroupe">
+      <h2>Ajouter une salle</h2>
+      <form @submit.prevent="addSalle">
         <label>Nom :</label>
-        <input type="text" v-model="nouveauGroupe.nom" required />
+        <input type="text" v-model="nouvelleSalle.nom" required />
+        <br />
+        <label>Adresse :</label>
+        <input type="text" v-model="nouvelleSalle.adresse" required />
+        <br />
+        <label>Capacité :</label>
+        <input type="number" v-model="nouvelleSalle.capacite" required />
+        <br />
+        <label>Nom gestionnaire :</label>
+        <input type="text" v-model="nouvelleSalle.nomGest" required />
+        <br />
+        <label>Prénom gestionnaire :</label>
+        <input type="text" v-model="nouvelleSalle.prenomGest" required />
+        <br />
+        <label>Association :</label>
+        <input type="text" v-model="nouvelleSalle.association" required />
         <br />
         <button type="submit">Ajouter</button>
       </form>
     </div>
-    <div v-if="groupeSelectionne">
-      <h2>Modifier le groupe</h2>
-      <form @submit.prevent="updateGroupe">
+    <div v-if="salleSelectionnee">
+      <h2>Modifier la salle</h2>
+      <form @submit.prevent="updateSalle">
         <label>Nom :</label>
-        <input type="text" v-model="groupeSelectionne.nom" />
+        <input type="text" v-model="salleSelectionnee.nom" required />
+        <br />
+        <label>Adresse :</label>
+        <input type="text" v-model="salleSelectionnee.adresse" required />
+        <br />
+        <label>Capacité :</label>
+        <input type="number" v-model="salleSelectionnee.capacite" required />
+        <br />
+        <label>Nom gestionnaire :</label>
+        <input type="text" v-model="salleSelectionnee.nomGest" required />
+        <br />
+        <label>Prénom gestionnaire :</label>
+        <input type="text" v-model="salleSelectionnee.prenomGest" required />
+        <br />
+        <label>Association :</label>
+        <input type="text" v-model="salleSelectionnee.association" required />
         <br />
         <button type="submit">Modifier</button>
-        <button @click="groupeSelectionne = null">Annuler</button>
+        <button @click="salleSelectionnee = null">Annuler</button>
       </form>
     </div>
+    <VoirElement v-if="salleVue" :key="salleVue.idSalle" :element="salleVue" />
   </div>
 </template>
 
 <script>
+import VoirElement from "@/components/VoirElement.vue";
 import axios from "axios";
 
 export default {
   data() {
     return {
-      groupes: [],
-      nouveauGroupe: {
+      salles: [],
+      nouvelleSalle: {
         nom: null,
+        adresse: null,
+        capacite: null,
+        nomGest: null,
+        prenomGest: null,
+        association: null,
       },
-      groupeSelectionne: null,
-      url: "http://localhost:8079/accarareno/groupes",
+      salleSelectionnee: null,
+      salleVue: null,
+      url: "http://localhost:8079/accarareno/salles",
     };
   },
   mounted() {
-    this.getGroupes();
+    this.getSalles();
   },
   methods: {
-    getGroupes() {
+    getSalles() {
       axios
         .get(this.url)
         .then((response) => {
-          console.log(response);
           document.getElementById("status").innerHTML =
-            "Status : " + response.data.status;
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
-            "Message : " + response.data.message;
-          this.groupes = response.data.data;
+            "Message : " + response.status;
+          this.salles = response.data.data;
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    addGroupe() {
-      let link = this.url + "?";
-      if (this.nouveauGroupe.nom != null) {
-        link += "nom=" + this.nouveauGroupe.nom;
-      }
+    addSalle() {
       axios
-        .post(link)
+        .post(this.url, this.nouvelleSalle)
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.data.status;
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
-            "Message : " + response.data.message;
-          this.getGroupes();
-          this.nouveauGroupe = {
+            "Message : " + response.status;
+          this.nouvelleSalle = {
             nom: null,
+            adresse: null,
+            capacite: null,
+            nomGest: null,
+            prenomGest: null,
+            association: null,
           };
+          this.getSalles();
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    editGroupe(groupe) {
-      this.groupeSelectionne = groupe;
+    editSalle(salle) {
+      this.salleSelectionnee = salle;
     },
-    updateGroupe() {
-      let link = this.url + "?id=" + this.groupeSelectionne.idGroupe;
-      if (this.groupeSelectionne.nom != null) {
-        link += "&nom=" + this.groupeSelectionne.nom;
-      }
+    updateSalle() {
       axios
-        .put(link)
+        .put(
+          this.url + "/" + this.salleSelectionnee.idSalle,
+          this.salleSelectionnee
+        )
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.data.status;
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
-            "Message : " + response.data.message;
-          this.groupeSelectionne = null;
-          this.getGroupes();
+            "Message : " + response.status;
+          this.salleSelectionnee = null;
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    deleteGroupe(groupe) {
+    deleteSalle(salle) {
       axios
-        .delete(this.url + "?id=" + groupe.idGroupe)
+        .delete(this.url + "/" + salle.idSalle)
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.data.status;
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
-            "Message : " + response.data.message;
-          this.getGroupes();
+            "Message : " + response.status;
+          this.getSalles();
         })
         .catch((error) => {
           console.log(error);
         });
     },
   },
+  components: { VoirElement },
 };
 </script>

@@ -1,141 +1,155 @@
 <template>
-  <div class="concerts">
-    <h1>Liste des concerts</h1>
+  <div class="soirees">
+    <h1>Liste des soirées</h1>
     <p id="status"></p>
     <p id="message"></p>
     <table>
       <thead>
         <tr>
-          <th>IdGroupe</th>
+          <th>IdSoiree</th>
           <th>Nom</th>
-          <th>NbArtistes</th>
+          <th>IdSalle</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="groupe in groupes" :key="groupe.idGroupe">
-          <td>{{ groupe.idGroupe }}</td>
-          <td>{{ groupe.nom }}</td>
-          <td>{{ groupe.nbArtistes }}</td>
+        <tr v-for="soiree in soirees" :key="soiree.idSoiree">
+          <td>{{ soiree.idSoiree }}</td>
+          <td>{{ soiree.nom }}</td>
+          <td>{{ soiree.idSalle }}</td>
           <td>
-            <button @click="editGroupe(groupe)">Modifier</button>
-            <button @click="deleteGroupe(groupe)">Supprimer</button>
+            <button @click="editSoiree(soiree)">Modifier</button>
+            <button @click="deleteSoiree(soiree)">Supprimer</button>
+            <button @click="soireeVue = soiree">Voir plus</button>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
-      <h2>Ajouter un groupe</h2>
-      <form @submit.prevent="addGroupe">
+      <h2>Ajouter une soirée</h2>
+      <form @submit.prevent="addSoiree">
         <label>Nom :</label>
-        <input type="text" v-model="nouveauGroupe.nom" required />
+        <input type="text" v-model="nouvelleSoiree.nom" required />
+        <br />
+        <label>Id salle :</label>
+        <input type="number" v-model="nouvelleSoiree.idSalle" required />
         <br />
         <button type="submit">Ajouter</button>
       </form>
     </div>
-    <div v-if="groupeSelectionne">
-      <h2>Modifier le groupe</h2>
-      <form @submit.prevent="updateGroupe">
+    <div v-if="soireeSelectionnee">
+      <h2>Modifier la soirée</h2>
+      <form @submit.prevent="updateSoiree">
         <label>Nom :</label>
-        <input type="text" v-model="groupeSelectionne.nom" />
+        <input type="text" v-model="soireeSelectionnee.nom" />
+        <br />
+        <label>Id salle :</label>
+        <input type="number" v-model="soireeSelectionnee.idSalle" />
         <br />
         <button type="submit">Modifier</button>
-        <button @click="groupeSelectionne = null">Annuler</button>
+        <button @click="soireeSelectionnee = null">Annuler</button>
       </form>
     </div>
+    <VoirElement
+      v-if="soireeVue"
+      :key="soireeVue.idSoiree"
+      :element="soireeVue"
+    />
   </div>
 </template>
 
 <script>
+import VoirElement from "@/components/VoirElement.vue";
 import axios from "axios";
 
 export default {
   data() {
     return {
-      groupes: [],
-      nouveauGroupe: {
+      soirees: [],
+      nouvelleSoiree: {
         nom: null,
+        idSalle: null,
       },
-      groupeSelectionne: null,
-      url: "http://localhost:8079/accarareno/groupes",
+      soireeSelectionnee: null,
+      soireeVue: null,
+      url: "http://localhost:8079/accarareno/soirees",
     };
   },
   mounted() {
-    this.getGroupes();
+    this.getSoirees();
   },
   methods: {
-    getGroupes() {
+    getSoirees() {
       axios
         .get(this.url)
         .then((response) => {
-          console.log(response);
           document.getElementById("status").innerHTML =
-            "Status : " + response.data.status;
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
-            "Message : " + response.data.message;
-          this.groupes = response.data.data;
+            "Message : " + response.status;
+          this.soirees = response.data.data;
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    addGroupe() {
-      let link = this.url + "?";
-      if (this.nouveauGroupe.nom != null) {
-        link += "nom=" + this.nouveauGroupe.nom;
-      }
+    addSoiree() {
       axios
-        .post(link)
+        .post(this.url, this.nouvelleSoiree)
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.data.status;
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
-            "Message : " + response.data.message;
-          this.getGroupes();
-          this.nouveauGroupe = {
+            "Message : " + response.status;
+          this.nouvelleSoiree = {
             nom: null,
+            idSalle: null,
           };
+          this.getSoirees();
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    editGroupe(groupe) {
-      this.groupeSelectionne = groupe;
+    editSoiree(soiree) {
+      this.soireeSelectionnee = soiree;
     },
-    updateGroupe() {
-      let link = this.url + "?id=" + this.groupeSelectionne.idGroupe;
-      if (this.groupeSelectionne.nom != null) {
-        link += "&nom=" + this.groupeSelectionne.nom;
-      }
+    updateSoiree() {
       axios
-        .put(link)
+        .put(
+          this.url + "/" + this.soireeSelectionnee.idSoiree,
+          this.soireeSelectionnee
+        )
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.data.status;
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
-            "Message : " + response.data.message;
-          this.groupeSelectionne = null;
-          this.getGroupes();
+            "Message : " + response.status;
+          this.soireeSelectionnee = null;
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    deleteGroupe(groupe) {
+    deleteSoiree(soiree) {
       axios
-        .delete(this.url + "?id=" + groupe.idGroupe)
+        .delete(this.url + "/" + soiree.idSoiree)
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.data.status;
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
-            "Message : " + response.data.message;
-          this.getGroupes();
+            "Message : " + response.status;
+          this.getSoirees();
         })
         .catch((error) => {
           console.log(error);
         });
     },
   },
+  components: { VoirElement },
 };
 </script>
