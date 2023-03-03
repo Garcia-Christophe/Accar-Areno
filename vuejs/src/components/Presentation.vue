@@ -2,6 +2,13 @@
   <div class="hello">
     <p>Bienvenue sur l'application web</p>
     <h1 id="titre-accueil">{{ titre }}</h1>
+
+    <h2>Présentation de l'équipe</h2>
+    <p>Professeur : Éric <strong>Cariou</strong></p>
+    <p>Professeur : Lévy <strong>Marques</strong></p>
+    <p>Développeuse : Alexia <strong>Sorin</strong></p>
+    <p>Développeur : Abderraouf <strong>Chebbah</strong></p>
+    <p>Développeur : Christophe <strong>Garcia</strong></p>
   </div>
 </template>
 

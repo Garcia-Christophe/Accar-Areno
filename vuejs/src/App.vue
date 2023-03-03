@@ -1,6 +1,9 @@
 <template>
   <nav>
     <router-link to="/">Accueil</router-link> |
+    <router-link to="/concerts">Concerts</router-link> |
+    <router-link to="/soirees">Soirees</router-link> |
+    <router-link to="/salles">Salles</router-link> |
     <router-link to="/groupes">Groupes</router-link> |
     <router-link to="/artistes">Artistes</router-link> |
     <router-link to="/ressources">Ressources</router-link>

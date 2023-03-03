@@ -1,6 +1,6 @@
 <template>
-  <div class="groupes">
-    <h1>Liste des groupes</h1>
+  <div class="concerts">
+    <h1>Liste des concerts</h1>
     <p id="status"></p>
     <p id="message"></p>
     <table>
@@ -20,7 +20,6 @@
           <td>
             <button @click="editGroupe(groupe)">Modifier</button>
             <button @click="deleteGroupe(groupe)">Supprimer</button>
-            <button @click="groupeVu = groupe">Voir</button>
           </td>
         </tr>
       </tbody>
@@ -44,12 +43,10 @@
         <button @click="groupeSelectionne = null">Annuler</button>
       </form>
     </div>
-    <VoirElement v-if="groupeVu" :key="groupeVu.idGroupe" :element="groupeVu" />
   </div>
 </template>
 
 <script>
-import VoirElement from "@/components/VoirElement.vue";
 import axios from "axios";
 
 export default {
@@ -60,7 +57,6 @@ export default {
         nom: null,
       },
       groupeSelectionne: null,
-      groupeVu: null,
       url: "http://localhost:8079/accarareno/groupes",
     };
   },
@@ -72,6 +68,7 @@ export default {
       axios
         .get(this.url)
         .then((response) => {
+          console.log(response);
           document.getElementById("status").innerHTML =
             "Status : " + response.data.status;
           document.getElementById("message").innerHTML =
@@ -140,6 +137,5 @@ export default {
         });
     },
   },
-  components: { VoirElement },
 };
 </script>
