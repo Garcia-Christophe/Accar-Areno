@@ -24,14 +24,14 @@
           <td>{{ concert.idGroupe }}</td>
           <td>{{ concert.idSoiree }}</td>
           <td>
-            <button @click="editConcert(concert)">Modifier</button>
-            <button @click="deleteConcert(concert)">Supprimer</button>
+            <button  v-if="isLoggedInAdmin" @click="editConcert(concert)">Modifier</button>
+            <button  v-if="isLoggedInAdmin" @click="deleteConcert(concert)">Supprimer</button>
             <button @click="concertVu = concert">Voir plus</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div>
+    <div  v-if="isLoggedInAdmin" >
       <h2>Ajouter un concert</h2>
       <form @submit.prevent="addConcert">
         <label>Date :</label>
@@ -100,9 +100,11 @@ export default {
       concertSelectionne: null,
       concertVu: null,
       url: "http://localhost:8080/concerts",
+      isLoggedInAdmin: "",
     };
   },
   mounted() {
+    this.isLoginAdmin();
     this.getConcerts();
   },
   methods: {
@@ -182,6 +184,17 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    isLoginAdmin() {
+        // Récupérez le nom d'utilisateur dans le stockage local du navigateur
+        const username = localStorage.getItem('nom');
+        // Vérifiez si l'utilisateur est connecté
+        if (username==="admin") {
+            this.isLoggedInAdmin = true;
+        }else{
+            this.isLoggedInAdmin = false;
+        }
+        console.log(this.isLoggedInAdmin);
     },
   },
   components: { VoirElement },
