@@ -26,7 +26,7 @@ public class SalleController {
     }
 
     /**
-     * pour récupérer une salle en fonction de son ID
+     * Method to get the salle based on the ID
      */
     @GetMapping("/{id}")
     public SalleDto getSalle(@PathVariable int id){

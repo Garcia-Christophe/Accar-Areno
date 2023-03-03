@@ -27,7 +27,7 @@ public class SoireeController {
     }
 
     /**
-     * pour récupérer une soiree en fonction de son ID
+     * Method to get the soiree based on the ID
      */
     @GetMapping("/{id}")
     public SoireeDto getSoiree(@PathVariable int id){
