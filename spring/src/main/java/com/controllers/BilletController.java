@@ -5,29 +5,34 @@ import com.services.BilletService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+/**
+Classe de contrôleur pour gérer les billets
+ */
 @RestController
 @RequestMapping("/billets")
 public class BilletController {
 
     private final BilletService billetService ;
-
+    /**
+     Constructeur pour injecter l'instance BilletService
+     */
     public BilletController(BilletService billetService) {
         this.billetService = billetService;
     }
 
 
     /**
-     * <p>Get all Billet in the system</p>
+     * <p>Get pour récupérer tous les billets du système</p>
      * @return List<BilletDto>
      */
+
     @GetMapping
     public List<BilletDto> getBillets() {
         return billetService.getAllBillets();
     }
 
     /**
-     * Method to get the billet based on the ID
+     * Methode pour récupérer un billet en fonction de son ID
      */
     @GetMapping("/{id}")
     public BilletDto getBillet(@PathVariable int id){
@@ -35,7 +40,7 @@ public class BilletController {
     }
 
     /**
-     * Create a new billet in the system
+     * pour créer un nouveau billet dans le système
      */
     @PostMapping
     public BilletDto saveBillet(final @RequestBody BilletDto billetDto){
@@ -43,7 +48,7 @@ public class BilletController {
     }
 
     /**
-     * Delete a billet by it's id
+     *  pour supprimer un billet en fonction de son ID
      */
     @DeleteMapping("/{id}")
     public Boolean deleteBillet(@PathVariable int id){

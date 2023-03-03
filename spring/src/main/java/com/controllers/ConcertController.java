@@ -18,7 +18,7 @@ public class ConcertController {
 
 
     /**
-     * <p>Get all Concert in the system</p>
+     * <p>Get all Concert in the system </p>
      * @return List<ConcertDto>
      */
     @GetMapping

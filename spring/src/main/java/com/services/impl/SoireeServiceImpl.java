@@ -12,9 +12,10 @@ import com.services.SoireeService;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service("soireeService")
 
-public class SoireeServiceImpl implements SoireeService {
+public class SoireeServiceImpl implements SoireeService{
 
     private final SoireeRepository soireeRepository ;
     private final BilletRepository billetRepository ;
@@ -59,10 +60,10 @@ public class SoireeServiceImpl implements SoireeService {
      */
     @Override
     public boolean deleteSoiree(int soireeId) {
-        List<Billet> billetList = billetRepository.findAll();
-        for( Billet billet : billetList)
-            if(billet.getIdSoiree().getIdSoiree()==soireeId)
-                billetRepository.delete(billet);
+
+        DAO<Billet> daoBillet = null;
+        List<Billet> billetList = daoBillet.findAll();
+            for( Billet billet : billetList)
 
         List<Concert> concertList = concertRepository.findAll();
         for( Concert concert : concertList)
