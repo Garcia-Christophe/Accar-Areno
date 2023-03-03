@@ -223,7 +223,7 @@ public class UtilisateurServlet extends HttpServlet {
 		if (nom != null) {
 			if (nom.equals("admin")) {
 				erreur = true;
-				json += "\"message\":\"Impossible de modifier le nom l'utilisateur admin.\",";
+				json += "\"message\":\"Impossible de prendre le nom l'utilisateur admin.\",";
 			}
 		}
 		// Création du DAO Utilisteur
@@ -256,8 +256,12 @@ public class UtilisateurServlet extends HttpServlet {
 		if (!erreur && u != null) {
 
 			if (nom != null) {
-				u.setNom(nom);
-
+				if(!u.getNom().equals("admin")) {
+					u.setNom(nom);
+				}else {
+					erreur = true;
+					json += "\"message\":\"Impossible de modifier le nom l'utilisateur admin.\",";
+				}	
 			}
 			if (!erreur && mdp != null) {
 				u.setMdp(mdp);

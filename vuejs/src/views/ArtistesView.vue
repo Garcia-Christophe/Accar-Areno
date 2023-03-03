@@ -21,14 +21,14 @@
           <td>{{ artiste.villeOrigine }}</td>
           <td>{{ artiste.dateNaissance }}</td>
           <td>{{ artiste.idGroupe }}</td>
-          <td>
+          <td v-if="isLoggedInAdmin">
             <button @click="editArtiste(artiste)">Modifier</button>
             <button @click="deleteArtiste(artiste)">Supprimer</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div>
+    <div v-if="isLoggedInAdmin">
       <h2>Ajouter un artiste</h2>
       <form @submit.prevent="addArtiste">
         <label>Nom :</label>
@@ -83,9 +83,11 @@ export default {
       },
       artisteSelectionne: null,
       url: "http://localhost:8079/accarareno/artistes",
+      isLoggedInAdmin: "",
     };
   },
   mounted() {
+    this.isLoginAdmin();
     this.getArtistes();
   },
   methods: {
@@ -207,6 +209,17 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    isLoginAdmin() {
+        // Récupérez le nom d'utilisateur dans le stockage local du navigateur
+        const username = localStorage.getItem('nom');
+        // Vérifiez si l'utilisateur est connecté
+        if (username==="admin") {
+            this.isLoggedInAdmin = true;
+        }else{
+            this.isLoggedInAdmin = false;
+        }
+        console.log(this.isLoggedInAdmin);
     },
   },
 };

@@ -37,7 +37,7 @@
             />
             <a v-else :href="res.url">L'article</a>
           </td>
-          <td>
+          <td v-if="isLoggedInAdmin">
             <button @click="editRessource(res)">Modifier</button>
             <button @click="deleteRessource(res)">Supprimer</button>
             <button @click="removeRessource(res)">Retirer</button>
@@ -45,7 +45,7 @@
         </tr>
       </tbody>
     </table>
-    <div>
+    <div v-if="isLoggedInAdmin">
       <h2>Ajouter une ressource</h2>
       <form @submit.prevent="addRessource">
         <div class="form-group">
@@ -147,7 +147,11 @@ export default {
       previousUrl: null,
       searchInput: "",
       url: "http://localhost:8079/accarareno/ressources",
+      isLoggedInAdmin: "",
     };
+  },
+  mounted() {
+    this.isLoginAdmin();
   },
   methods: {
     getRessources() {
@@ -265,6 +269,17 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    isLoginAdmin() {
+        // Récupérez le nom d'utilisateur dans le stockage local du navigateur
+        const username = localStorage.getItem('nom');
+        // Vérifiez si l'utilisateur est connecté
+        if (username==="admin") {
+            this.isLoggedInAdmin = true;
+        }else{
+            this.isLoggedInAdmin = false;
+        }
+        console.log(this.isLoggedInAdmin);
     },
   },
 };

@@ -17,14 +17,14 @@
           <td>{{ groupe.idGroupe }}</td>
           <td>{{ groupe.nom }}</td>
           <td>{{ groupe.nbArtistes }}</td>
-          <td>
+          <td v-if="isLoggedInAdmin">
             <button @click="editGroupe(groupe)">Modifier</button>
             <button @click="deleteGroupe(groupe)">Supprimer</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div>
+    <div v-if="isLoggedInAdmin">
       <h2>Ajouter un groupe</h2>
       <form @submit.prevent="addGroupe">
         <label>Nom :</label>
@@ -58,9 +58,11 @@ export default {
       },
       groupeSelectionne: null,
       url: "http://localhost:8079/accarareno/groupes",
+      isLoggedInAdmin: "",
     };
   },
   mounted() {
+    this.isLoginAdmin();
     this.getGroupes();
   },
   methods: {
@@ -135,6 +137,17 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    isLoginAdmin() {
+        // Récupérez le nom d'utilisateur dans le stockage local du navigateur
+        const username = localStorage.getItem('nom');
+        // Vérifiez si l'utilisateur est connecté
+        if (username==="admin") {
+            this.isLoggedInAdmin = true;
+        }else{
+            this.isLoggedInAdmin = false;
+        }
+        console.log(this.isLoggedInAdmin);
     },
   },
 };
