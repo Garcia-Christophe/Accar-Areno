@@ -104,7 +104,7 @@ export default {
         .get(url)
         .then((response) => {
           this.el["soiree"] =
-            response.data[0].nom + " (id " + this.element.idSoiree + ")";
+            response.data.nom + " (id " + this.element.idSoiree + ")";
         })
         .catch((error) => {
           console.log(error);
@@ -132,19 +132,19 @@ export default {
       // affiche le nom de la salle où a lieu la soirée
       let url = "http://localhost:8080/salles/" + this.element.idSalle;
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           this.el["salle"] =
-            response.data[0].nom + " (id " + this.element.idSalle + ")";
+            response.data.nom + " (id " + this.element.idSalle + ")";
         })
         .catch((error) => {
           console.log(error);
         });
     } else if (this.el.type === "utilisateur") {
       // affiche les billets de l'utilisateur
-      let url2 = url + "billets?idUtilisateur="+this.element.idUtilisateur;
+      let url = "http://localhost:8079/accarareno/billets?idUtilisateur="+this.element.idUtilisateur;
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           let billets = response.data.data;
           let index = 1;
