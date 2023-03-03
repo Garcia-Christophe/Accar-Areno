@@ -24,6 +24,7 @@
           <td>
             <button @click="editArtiste(artiste)">Modifier</button>
             <button @click="deleteArtiste(artiste)">Supprimer</button>
+            <button @click="artisteVu = artiste">Voir</button>
           </td>
         </tr>
       </tbody>
@@ -65,10 +66,16 @@
         <button @click="artisteSelectionne = null">Annuler</button>
       </form>
     </div>
+    <VoirElement
+      v-if="artisteVu"
+      :key="artisteVu.idArtiste"
+      :element="artisteVu"
+    />
   </div>
 </template>
 
 <script>
+import VoirElement from "@/components/VoirElement.vue";
 import axios from "axios";
 
 export default {
@@ -82,6 +89,7 @@ export default {
         idGroupe: null,
       },
       artisteSelectionne: null,
+      artisteVu: null,
       url: "http://localhost:8079/accarareno/artistes",
     };
   },
@@ -93,7 +101,6 @@ export default {
       axios
         .get(this.url)
         .then((response) => {
-          console.log(response);
           document.getElementById("status").innerHTML =
             "Status : " + response.data.status;
           document.getElementById("message").innerHTML =
@@ -209,5 +216,6 @@ export default {
         });
     },
   },
+  components: { VoirElement },
 };
 </script>
