@@ -17,14 +17,15 @@
           <td>{{ groupe.idGroupe }}</td>
           <td>{{ groupe.nom }}</td>
           <td>{{ groupe.nbArtistes }}</td>
-          <td v-if="isLoggedInAdmin">
-            <button @click="editGroupe(groupe)">Modifier</button>
-            <button @click="deleteGroupe(groupe)">Supprimer</button>
+          <td>
+            <button  v-if="isLoggedInAdmin" @click="editGroupe(groupe)">Modifier</button>
+            <button  v-if="isLoggedInAdmin" @click="deleteGroupe(groupe)">Supprimer</button>
+            <button @click="groupeVu = groupe">Voir</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div v-if="isLoggedInAdmin">
+    <div  v-if="isLoggedInAdmin">
       <h2>Ajouter un groupe</h2>
       <form @submit.prevent="addGroupe">
         <label>Nom :</label>
@@ -43,10 +44,12 @@
         <button @click="groupeSelectionne = null">Annuler</button>
       </form>
     </div>
+    <VoirElement v-if="groupeVu" :key="groupeVu.idGroupe" :element="groupeVu" />
   </div>
 </template>
 
 <script>
+import VoirElement from "@/components/VoirElement.vue";
 import axios from "axios";
 
 export default {
@@ -57,6 +60,7 @@ export default {
         nom: null,
       },
       groupeSelectionne: null,
+      groupeVu: null,
       url: "http://localhost:8079/accarareno/groupes",
       isLoggedInAdmin: "",
     };
@@ -70,7 +74,6 @@ export default {
       axios
         .get(this.url)
         .then((response) => {
-          console.log(response);
           document.getElementById("status").innerHTML =
             "Status : " + response.data.status;
           document.getElementById("message").innerHTML =
@@ -150,5 +153,6 @@ export default {
         console.log(this.isLoggedInAdmin);
     },
   },
+  components: { VoirElement },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="ressources">
-    <h1>Liste des Ressources</h1>
+    <h1>Liste des ressources</h1>
     <p id="status"></p>
     <p id="message"></p>
     <label for="searchInput">Recherche de ressources :</label>
@@ -37,7 +37,7 @@
             />
             <a v-else :href="res.url">L'article</a>
           </td>
-          <td v-if="isLoggedInAdmin">
+          <td  v-if="isLoggedInAdmin">
             <button @click="editRessource(res)">Modifier</button>
             <button @click="deleteRessource(res)">Supprimer</button>
             <button @click="removeRessource(res)">Retirer</button>
@@ -45,7 +45,7 @@
         </tr>
       </tbody>
     </table>
-    <div v-if="isLoggedInAdmin">
+    <div>
       <h2>Ajouter une ressource</h2>
       <form @submit.prevent="addRessource">
         <div class="form-group">
@@ -149,7 +149,7 @@ export default {
       url: "http://localhost:8079/accarareno/ressources",
       isLoggedInAdmin: "",
     };
-  },
+  }, 
   mounted() {
     this.isLoginAdmin();
   },

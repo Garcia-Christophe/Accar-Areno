@@ -20,7 +20,7 @@
             <td>
               <button @click="editUtilisateur(utilisateur)">Modifier</button>
               <button @click="deleteUtilisateur(utilisateur)">Supprimer</button>
-              <button>Voir plus</button>
+              <button @click="utilisateurVu = utilisateur">Voir plus</button>
             </td>
           </tr>
         </tbody>
@@ -38,10 +38,16 @@
           <button @click="utilisateurSelectionne = null">Annuler</button>
         </form>
       </div>
+      <VoirElement
+        v-if="utilisateurVu"
+        :key="utilisateurVu.idUtilisateur"
+        :element="utilisateurVu"
+      />
     </div>
   </template>
   
   <script>
+  import VoirElement from "@/components/VoirElement.vue";
   import axios from "axios";
   
   export default {
@@ -49,6 +55,7 @@
       return {
         utilisateur: null,
         utilisateurSelectionne: null,
+        utilisateurVu: null,
         isAdmin: "",
         url: "http://localhost:8079/accarareno/utilisateurs",
       };
@@ -129,6 +136,7 @@
           });
       },
     },
+    components: { VoirElement },
   };
   </script>
   

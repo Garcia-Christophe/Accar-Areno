@@ -21,14 +21,15 @@
           <td>{{ artiste.villeOrigine }}</td>
           <td>{{ artiste.dateNaissance }}</td>
           <td>{{ artiste.idGroupe }}</td>
-          <td v-if="isLoggedInAdmin">
-            <button @click="editArtiste(artiste)">Modifier</button>
-            <button @click="deleteArtiste(artiste)">Supprimer</button>
+          <td>
+            <button  v-if="isLoggedInAdmin" @click="editArtiste(artiste)">Modifier</button>
+            <button  v-if="isLoggedInAdmin" @click="deleteArtiste(artiste)">Supprimer</button>
+            <button @click="artisteVu = artiste">Voir</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div v-if="isLoggedInAdmin">
+    <div  v-if="isLoggedInAdmin">
       <h2>Ajouter un artiste</h2>
       <form @submit.prevent="addArtiste">
         <label>Nom :</label>
@@ -65,10 +66,16 @@
         <button @click="artisteSelectionne = null">Annuler</button>
       </form>
     </div>
+    <VoirElement
+      v-if="artisteVu"
+      :key="artisteVu.idArtiste"
+      :element="artisteVu"
+    />
   </div>
 </template>
 
 <script>
+import VoirElement from "@/components/VoirElement.vue";
 import axios from "axios";
 
 export default {
@@ -82,6 +89,7 @@ export default {
         idGroupe: null,
       },
       artisteSelectionne: null,
+      artisteVu: null,
       url: "http://localhost:8079/accarareno/artistes",
       isLoggedInAdmin: "",
     };
@@ -95,7 +103,6 @@ export default {
       axios
         .get(this.url)
         .then((response) => {
-          console.log(response);
           document.getElementById("status").innerHTML =
             "Status : " + response.data.status;
           document.getElementById("message").innerHTML =
@@ -222,5 +229,6 @@ export default {
         console.log(this.isLoggedInAdmin);
     },
   },
+  components: { VoirElement },
 };
 </script>
