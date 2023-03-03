@@ -18,14 +18,14 @@
           <td>{{ soiree.nom }}</td>
           <td>{{ soiree.idSalle }}</td>
           <td>
-            <button @click="editSoiree(soiree)">Modifier</button>
-            <button @click="deleteSoiree(soiree)">Supprimer</button>
+            <button  v-if="isLoggedInAdmin" @click="editSoiree(soiree)">Modifier</button>
+            <button  v-if="isLoggedInAdmin" @click="deleteSoiree(soiree)">Supprimer</button>
             <button @click="soireeVue = soiree">Voir plus</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div>
+    <div  v-if="isLoggedInAdmin">
       <h2>Ajouter une soirée</h2>
       <form @submit.prevent="addSoiree">
         <label>Nom :</label>
@@ -73,9 +73,11 @@ export default {
       soireeSelectionnee: null,
       soireeVue: null,
       url: "http://localhost:8080/soirees",
+      isLoggedInAdmin: "",
     };
   },
   mounted() {
+    this.isLoginAdmin();
     this.getSoirees();
   },
   methods: {
@@ -148,6 +150,17 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    isLoginAdmin() {
+        // Récupérez le nom d'utilisateur dans le stockage local du navigateur
+        const username = localStorage.getItem('nom');
+        // Vérifiez si l'utilisateur est connecté
+        if (username==="admin") {
+            this.isLoggedInAdmin = true;
+        }else{
+            this.isLoggedInAdmin = false;
+        }
+        console.log(this.isLoggedInAdmin);
     },
   },
   components: { VoirElement },

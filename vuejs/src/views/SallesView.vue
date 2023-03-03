@@ -26,14 +26,14 @@
           <td>{{ salle.prenomGest }}</td>
           <td>{{ salle.association }}</td>
           <td>
-            <button @click="editSalle(salle)">Modifier</button>
-            <button @click="deleteSalle(salle)">Supprimer</button>
+            <button  v-if="isLoggedInAdmin" @click="editSalle(salle)">Modifier</button>
+            <button  v-if="isLoggedInAdmin" @click="deleteSalle(salle)">Supprimer</button>
             <button @click="salleVue = salle">Voir plus</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div>
+    <div  v-if="isLoggedInAdmin">
       <h2>Ajouter une salle</h2>
       <form @submit.prevent="addSalle">
         <label>Nom :</label>
@@ -105,9 +105,11 @@ export default {
       salleSelectionnee: null,
       salleVue: null,
       url: "http://localhost:8080/salles",
+      isLoggedInAdmin: "",
     };
   },
   mounted() {
+    this.isLoginAdmin();
     this.getSalles();
   },
   methods: {
@@ -184,6 +186,17 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    isLoginAdmin() {
+        // Récupérez le nom d'utilisateur dans le stockage local du navigateur
+        const username = localStorage.getItem('nom');
+        // Vérifiez si l'utilisateur est connecté
+        if (username==="admin") {
+            this.isLoggedInAdmin = true;
+        }else{
+            this.isLoggedInAdmin = false;
+        }
+        console.log(this.isLoggedInAdmin);
     },
   },
   components: { VoirElement },
