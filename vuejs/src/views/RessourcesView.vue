@@ -1,6 +1,6 @@
 <template>
   <div class="ressources">
-    <h1>Liste des Ressources</h1>
+    <h1>Liste des ressources</h1>
     <p id="status"></p>
     <p id="message"></p>
     <label for="searchInput">Recherche de ressources :</label>

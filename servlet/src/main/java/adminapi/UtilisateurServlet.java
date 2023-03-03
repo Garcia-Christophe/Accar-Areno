@@ -1,20 +1,18 @@
 package adminapi;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import dao.mysql.DAO;
+import dao.mysql.DAOException;
+import dao.mysql.UtilisateurDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pojo.mysql.Utilisateur;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.List;
-
-import dao.mysql.DAO;
-import dao.mysql.DAOException;
-import dao.mysql.UtilisateurDAO;
 
 /**
  * Servlet implementation class UtilisateurServlet
@@ -105,7 +103,7 @@ public class UtilisateurServlet extends HttpServlet {
 		json += "{";
 		json += "\"idUtilisateur\":" + u.getIdUtilisateur() + ",";
 		json += "\"mdp\":\"" + u.getMdp() + "\",";
-		json += "\"nom\":\"" + u.getNom()+"\"";
+		json += "\"nom\":\"" + u.getNom() + "\"";
 		json += "}";
 		return json;
 	}
