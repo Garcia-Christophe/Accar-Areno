@@ -72,7 +72,7 @@ export default {
       },
       soireeSelectionnee: null,
       soireeVue: null,
-      url: "http://localhost:8079/accarareno/soirees",
+      url: "http://localhost:8080/soirees",
     };
   },
   mounted() {
@@ -88,7 +88,7 @@ export default {
             (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
             "Message : " + response.status;
-          this.soirees = response.data.data;
+          this.soirees = response.data;
         })
         .catch((error) => {
           console.log(error);
