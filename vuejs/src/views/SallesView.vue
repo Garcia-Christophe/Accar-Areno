@@ -104,7 +104,7 @@ export default {
       },
       salleSelectionnee: null,
       salleVue: null,
-      url: "http://localhost:8079/accarareno/salles",
+      url: "http://localhost:8080/salles",
     };
   },
   mounted() {
@@ -120,7 +120,7 @@ export default {
             (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
             "Message : " + response.status;
-          this.salles = response.data.data;
+          this.salles = response.data;
         })
         .catch((error) => {
           console.log(error);
