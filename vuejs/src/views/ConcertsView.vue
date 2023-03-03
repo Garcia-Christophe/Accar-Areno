@@ -26,6 +26,7 @@
           <td>
             <button @click="editConcert(concert)">Modifier</button>
             <button @click="deleteConcert(concert)">Supprimer</button>
+            <button @click="concertVu = concert">Voir plus</button>
           </td>
         </tr>
       </tbody>
@@ -73,10 +74,16 @@
         <button @click="concertSelectionne = null">Annuler</button>
       </form>
     </div>
+    <VoirElement
+      v-if="concertVu"
+      :key="concertVu.idConcert"
+      :element="concertVu"
+    />
   </div>
 </template>
 
 <script>
+import VoirElement from "@/components/VoirElement.vue";
 import axios from "axios";
 
 export default {
@@ -91,6 +98,7 @@ export default {
         idSoiree: null,
       },
       concertSelectionne: null,
+      concertVu: null,
       url: "http://localhost:8080/concerts",
     };
   },
@@ -103,9 +111,8 @@ export default {
         .get(this.url)
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.status >= 200 && response.status < 300
-              ? "OK"
-              : "KO";
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
             "Message : " + response.status;
           this.concerts = response.data;
@@ -117,17 +124,14 @@ export default {
     addConcert() {
       this.nouveauConcert.heure += ":00";
       this.nouveauConcert.duree += ":00";
-      console.log(this.nouveauConcert);
       axios
-        .post(this.url, { data: this.nouveauConcert })
+        .post(this.url, this.nouveauConcert)
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.status >= 200 && response.status < 300
-              ? "OK"
-              : "KO";
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
             "Message : " + response.status;
-          this.getConcerts();
           this.nouveauConcert = {
             date: null,
             heure: null,
@@ -135,6 +139,7 @@ export default {
             idGroupe: null,
             idSoiree: null,
           };
+          this.getConcerts();
         })
         .catch((error) => {
           console.log(error);
@@ -144,19 +149,20 @@ export default {
       this.concertSelectionne = concert;
     },
     updateConcert() {
+      this.concertSelectionne.heure += ":00";
+      this.concertSelectionne.duree += ":00";
       axios
-        .put(this.url + "/" + this.concertSelectionne.idConcert, {
-          data: this.concertSelectionne,
-        })
+        .put(
+          this.url + "/" + this.concertSelectionne.idConcert,
+          this.concertSelectionne
+        )
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.status >= 200 && response.status < 300
-              ? "OK"
-              : "KO";
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
             "Message : " + response.status;
           this.groupeSelectionne = null;
-          this.getConcerts();
         })
         .catch((error) => {
           console.log(error);
@@ -167,9 +173,8 @@ export default {
         .delete(this.url + "/" + concert.idConcert)
         .then((response) => {
           document.getElementById("status").innerHTML =
-            "Status : " + response.status >= 200 && response.status < 300
-              ? "OK"
-              : "KO";
+            "Status : " +
+            (response.status >= 200 && response.status < 300 ? "OK" : "KO");
           document.getElementById("message").innerHTML =
             "Message : " + response.status;
           this.getConcerts();
@@ -179,5 +184,6 @@ export default {
         });
     },
   },
+  components: { VoirElement },
 };
 </script>

@@ -37,7 +37,6 @@ public class ConcertServiceImpl implements ConcertService {
         List<ConcertDto> concertList = this.getAllConcerts();
         for (int i = 0 ;i< concertList.size();i++)
         {
-
             if (concertList.get(i).getDate().toString().equals(concertDto.getDate().toString()) && concertList.get(i).getHeure().equals(concertDto.getHeure()))
                         //if (soireeRepository.getById(concertList.get(i).getIdSoiree()).getIdSalle() == soireeRepository.getById(concertDto.getIdSoiree()).getIdSalle())
                             throw new IllegalArgumentException("vous ne pouvez pas ajouter ce concert cat il y a un autre au même jour et heure dans la salle " +

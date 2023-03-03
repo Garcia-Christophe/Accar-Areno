@@ -27,7 +27,6 @@ public class Concert {
     private Time duree;
     @JoinColumn(name = "idGroupe", referencedColumnName = "idGroupe")
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
     private Groupe idGroupe;
     @JoinColumn(name = "idSoiree", referencedColumnName = "idSoiree")
     @ManyToOne
