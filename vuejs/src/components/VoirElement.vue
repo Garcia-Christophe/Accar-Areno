@@ -143,19 +143,17 @@ export default {
         });
     } else if (this.el.type === "utilisateur") {
       // affiche les billets de l'utilisateur
-      let url2 = url + "billets";
+      let url2 = url + "billets?idUtilisateur="+this.element.idUtilisateur;
       axios
         .get(url2)
         .then((response) => {
-          let billets = response.data.filter(
-            (billet) => billet.idUtilisateur === this.element.idUtilisateur
-          );
+          let billets = response.data.data;
           let index = 1;
           for (let billet of billets) {
             this.el["billet_" + index] =
               billet.prix +
-              "€ (idSoiree " +
-              billet.idSoiree +
+              "€ (nomSoiree " +
+              billet.nomSoiree +
               ", id " +
               billet.idBillet +
               ")";
