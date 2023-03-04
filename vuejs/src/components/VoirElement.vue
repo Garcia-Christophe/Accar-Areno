@@ -32,12 +32,11 @@ export default {
       i++;
     }
 
-    let url = "http://localhost:8079/accarareno/";
     if (this.el.type === "groupe") {
       // affiche les artistes du groupe
-      let url2 = url + "artistes";
+      let url = "http://localhost:8079/accarareno/artistes";
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           let artistes = response.data.data.filter(
             (artiste) => artiste.idGroupe === this.element.idGroupe
@@ -56,9 +55,9 @@ export default {
         });
     } else if (this.el.type === "artiste") {
       // affiche le nom du groupe de l'artiste
-      let url2 = url + "groupes?id=" + this.element.idGroupe;
+      let url = "http://localhost:8079/accarareno/groupes?id=" + this.element.idGroupe;
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           this.el["groupe"] =
             response.data.data.nom + " (id " + this.element.idGroupe + ")";
@@ -68,9 +67,9 @@ export default {
         });
     } else if (this.el.type === "billet") {
       // affiche l'utilisateur qui a acheté le billet et la soirée à laquelle il est associé
-      let url2 = url + "soirees/" + this.element.idSoiree;
+      let url = "http://localhost:8080/soirees/" + this.element.idSoiree;
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           this.el["soiree"] =
             response.data[0].nom + " (id " + this.element.idSoiree + ")";
@@ -78,9 +77,9 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-      url2 = url + "salles/" + this.element.idSalle;
+      url = "http://localhost:8080/salles/" + this.element.idSalle;
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           this.el["salle"] =
             response.data[0].nom + " (id " + this.element.idSalle + ")";
@@ -90,9 +89,9 @@ export default {
         });
     } else if (this.el.type === "concert") {
       // affiche le nom du groupe et le nom de la soiree
-      let url2 = url + "groupes?id=" + this.element.idGroupe;
+      let url = "http://localhost:8079/accarareno/groupes?id=" + this.element.idGroupe;
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           this.el["groupe"] =
             response.data.data.nom + " (id " + this.element.idGroupe + ")";
@@ -100,21 +99,21 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-      url2 = url + "soirees/" + this.element.idSoiree;
+      url = "http://localhost:8080/soirees/" + this.element.idSoiree;
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           this.el["soiree"] =
-            response.data[0].nom + " (id " + this.element.idSoiree + ")";
+            response.data.nom + " (id " + this.element.idSoiree + ")";
         })
         .catch((error) => {
           console.log(error);
         });
     } else if (this.el.type === "salle") {
       // affiche le nom des soirees qui ont lieu dans la salle
-      let url2 = url + "soirees/";
+      let url = "http://localhost:8080/soirees";
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           let soirees = response.data.filter(
             (soiree) => soiree.idSalle === this.element.idSalle
@@ -131,21 +130,21 @@ export default {
         });
     } else if (this.el.type === "soiree") {
       // affiche le nom de la salle où a lieu la soirée
-      let url2 = url + "salles/" + this.element.idSalle;
+      let url = "http://localhost:8080/salles/" + this.element.idSalle;
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           this.el["salle"] =
-            response.data[0].nom + " (id " + this.element.idSalle + ")";
+            response.data.nom + " (id " + this.element.idSalle + ")";
         })
         .catch((error) => {
           console.log(error);
         });
     } else if (this.el.type === "utilisateur") {
       // affiche les billets de l'utilisateur
-      let url2 = url + "billets?idUtilisateur="+this.element.idUtilisateur;
+      let url = "http://localhost:8079/accarareno/billets?idUtilisateur="+this.element.idUtilisateur;
       axios
-        .get(url2)
+        .get(url)
         .then((response) => {
           let billets = response.data.data;
           let index = 1;
