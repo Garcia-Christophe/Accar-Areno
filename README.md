@@ -34,6 +34,7 @@ Cependant, si vous rencontrez des erreurs lors du lancement, voici peut-être la
 
 - Problème avec Tomcat pour le lancement des servlets : installer localement [Tomcat 10.0.27](https://archive.apache.org/dist/tomcat/tomcat-10/v10.0.27/bin/). Mettre à jour Maven (clic droit sur le projet > Maven > Update Maven). Relancer le serveur (clic droit sur le projet > Run as server > Choisir Tomcat 10.0 > Choisir le dossier Tomcat nouvellement dézippé)
 - Problème avec la base de données : Récupérer les scripts de création de tables et d'insertion des valeurs (doc/*.sql). Installer et exécuter Wamp (permettant de lancer un serveur lcoalhost). Ouvrir PhpMyAdmin (login : 'root', mdp : ''). Exécuter respectivement les scripts sql. Relancer l'ensemble des projets.
+- Problème d'accès : si vous avez décidé d'utiliser une base de données distante, pensez à modifier l'adresse d'accès dans les différents projets (spring, servlet). Si l'ensemble de l'application est stockée sur un serveur, alors il faut modifier les liens vers vuejs vers l'api (en mettant le nom du serveur au lieu de localhost) 
 
 ## Informations complémentaires
 
