@@ -27,10 +27,10 @@ public class ConcertServiceImpl implements ConcertService {
     }
 
     /**
-     * @param concertDto
-     * @return
-     */
-
+    * Enregistre un nouveau concert dans la bdd.
+    * @param concertDto l'objet ConcertDto à enregistrer
+    * @return l'objet ConcertDto enregistré
+	*/
     @Override
     public ConcertDto saveConcert(ConcertDto concertDto) {
         Concert concert = new Concert();
@@ -52,19 +52,20 @@ public class ConcertServiceImpl implements ConcertService {
     }
 
     /**
-     * @param concertId
-     * @return
-     */
+    * Récupère le concert avec l'id donné.
+    * @param concertId l'id du concert à récupérer
+    * @return le concert avec l'id donné en param
+    */
     @Override
     public ConcertDto getConcertById(int concertId) {
         return ConcertEntityToDao(concertRepository.getById(concertId));
-
     }
 
     /**
-     * @param concertId
-     * @return
-     */
+    * Supprime un concert de la base de données en utilisant son identifiant unique.
+    * @param concertId l'id du concert à supprimer
+    * @return true si le concert a été supprimé avec succès, false sinon
+    */
     @Override
     public boolean deleteConcert(int concertId) {
         concertRepository.deleteById(concertId);
@@ -72,8 +73,9 @@ public class ConcertServiceImpl implements ConcertService {
     }
 
     /**
-     * @return
-     */
+    * Récupère la liste de tous les concerts.
+    * @return une liste de tous les concerts existants.
+    */
     @Override
     public List<ConcertDto> getAllConcerts() {
         List<ConcertDto> concertDtosList = new ArrayList<>();
@@ -85,10 +87,11 @@ public class ConcertServiceImpl implements ConcertService {
     }
 
     /**
-     * @param concertId
-     * @param concertDto
-     * @return
-     */
+    * Met à jour un concert existant avec les nouvelles informations spécifiées dans un objet ConcertDto.
+    * @param concertId l'id du concert à mettre à jour.
+    * @param concertDto l'objet ConcertDto contenant les nouvelles informations du concert.
+    * @return l'objet ConcertDto mis à jour.
+	*/
     @Override
     public ConcertDto updateConcert(int concertId, ConcertDto concertDto) {
         ConcertDto concertDto1 = getConcertById(concertId);
@@ -101,6 +104,12 @@ public class ConcertServiceImpl implements ConcertService {
         return saveConcert(concertDto1);
     }
 
+
+	/**
+    * Convertit un objet Concert en un objet ConcertDto.
+    * @param concert l'objet Concert à convertir
+    * @return un objet ConcertDto correspondant à l'objet Concert converti
+    */
     private ConcertDto ConcertEntityToDao(Concert concert){
         ConcertDto concertDto = new ConcertDto();
         concertDto.setIdConcert(concert.getIdConcert());
@@ -112,6 +121,11 @@ public class ConcertServiceImpl implements ConcertService {
         return concertDto;
     }
 
+	/**
+    * Convertit un objet ConcertDto en un objet Concert.
+    * @param ConcertDto l'objet ConcertDto à convertir
+    * @return un objet Concert correspondant à l'objet Concert converti
+    */
     private Concert ConcertDtoToEntity(ConcertDto concertDto) {
         Concert concert = new Concert();
         concert.setIdConcert(concertDto.getIdConcert());

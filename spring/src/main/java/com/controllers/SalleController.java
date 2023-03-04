@@ -18,41 +18,50 @@ public class SalleController {
     }
 
     /**
-     * <p>Get all Salles in the system</p>
-     * @return List<SalleDto>
-     */
+    Récupère toutes les salles.
+    @return Liste des salles
+    */
     @GetMapping
     public List<SalleDto> getSalles() {
         return salleService.getAllSalles();
     }
 
     /**
-     * Method to get the salle based on the ID
-     */
+    Récupère une salle par son id.
+    @param id Identifiant de la salle
+    @return Salle correspondante
+    */
     @GetMapping("/{id}")
     public SalleDto getSalle(@PathVariable int id){
         return salleService.getSalleById(id);
     }
 
     /**
-     * Create a new salle in the system
-     */
+    Enregistre une salle.
+    @param salleDto Salle à enregistrer
+    @return Salle enregistrée
+    */
     @PostMapping
     public SalleDto saveSalle(final @RequestBody SalleDto salleDto){
         return salleService.saveSalle(salleDto);
     }
 
-    /**
-     * Delete a salle by its id
-     */
+	/**
+    Supprime une salle.
+    @param id Identifiant de la salle à supprimer
+    @return Vrai si la salle a été supprimée avec succès, faux sinon
+    */
     @DeleteMapping("/{id}")
     public Boolean deleteSalle(@PathVariable int id){
         return salleService.deleteSalle(id);
     }
 
-    /**
-     * Update an existing salle in the system
-     */
+	/**
+    Met à jour une salle.
+    @param id Identifiant de la salle à mettre à jour
+    @param salleDto Nouvelle salle
+    @return Salle mise à jour
+    */
     @PutMapping("/{id}")
     public SalleDto updateSalle(@PathVariable int id, final @RequestBody SalleDto salleDto) {
         return salleService.updateSalle(id, salleDto);

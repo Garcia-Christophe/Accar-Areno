@@ -18,45 +18,55 @@ public class SoireeController {
         this.soireeService = soireeService;
     }
 
-    /**
-     * <p>Get all Soirees in the system</p>
-     * @return List<SoireeDto>
-     */
+   /**
+    Récupère toutes les soirées.
+    @return Une liste de SoireeDto contenant toutes les soirées.
+    */
     @GetMapping
     public List<SoireeDto> getSoirees() {
         return soireeService.getAllSoiree();
     }
 
     /**
-     * Method to get the soiree based on the ID
-     */
+    Récupère les informations d'une soirée en fonction de son id.
+    @param id l'id de la soirée à récupérer.
+    @return un objet SoireeDto.
+    */
     @GetMapping("/{id}")
     public SoireeDto getSoiree(@PathVariable int id){
         return soireeService.getSoireeById(id);
     }
 
     /**
-     * Create a new soiree in the system
-     */
+    Ajoute une nouvelle soirée à la bdd.
+    @param soireeDto SoireeDto à ajouter.
+    @return SoireeDto ajoutée à la bdd.
+    */
     @PostMapping
     public SoireeDto saveSoiree(final @RequestBody SoireeDto soireeDto){
         return soireeService.saveSoiree(soireeDto);
     }
 
     /**
-     * Delete a soiree by its id
-     */
+    Supprime une soirée à partir de son id.
+    @param id l'id de la soirée à supprimer.
+    @return true si la suppression a été effectuée avec succès, false sinon.
+    */
     @DeleteMapping("/{id}")
     public Boolean deleteSoiree(@PathVariable int id){
         return soireeService.deleteSoiree(id);
     }
 
+	/**
+	 * Met à jour une soirée existante en utilisant SoireeDto en entrée.
+	 * @param id l'id de la soirée à mettre à jour
+	 * @param soireeDto SoireeDto contenant les nouvelles valeurs
+	 * @return SoireeDto mis à jour
+	 */
     @PutMapping("/{id}")
     public SoireeDto updateSoiree(@PathVariable int id, final @RequestBody SoireeDto soireeDto) {
         return soireeService.updateSoiree(id, soireeDto);
     }
-
-
 
 
 }

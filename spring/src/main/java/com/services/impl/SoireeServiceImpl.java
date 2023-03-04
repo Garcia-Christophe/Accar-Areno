@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 @Service("soireeService")
 
+	/**
+    La classe SoireeServiceImpl implémente l'interface SoireeService
+    et fournit une implémentation de ses méthodes.
+    */
 public class SoireeServiceImpl implements SoireeService {
 
     private final SoireeRepository soireeRepository ;
@@ -30,9 +34,10 @@ public class SoireeServiceImpl implements SoireeService {
     }
 
     /**
-     * @param soireeDto
-     * @return
-     */
+	 * Enregistre une soirée dans la base de données.
+	 * @param soireeDto - L'objet SoireeDto contenant les informations de la soirée à enregistrer.
+	 * @return L'objet SoireeDto sauvegardé dans la base de données.
+	 */ 	
     @Override
     public SoireeDto saveSoiree(SoireeDto soireeDto) {
         Soiree soiree = new Soiree();
@@ -40,23 +45,24 @@ public class SoireeServiceImpl implements SoireeService {
         return SoireeEntityToDto(soiree);
     }
 
-    /**
-     * @param soireeId
-     * @return
-     */
+	/**
+	 * Récupère une soirée de la base de données en utilisant son identifiant.
+	 * @param soireeId - L'identifiant de la soirée à récupérer.
+	 * @return L'objet SoireeDto correspondant à l'identifiant spécifié.
+	 * @throws IllegalArgumentException si l'identifiant spécifié est invalide.
+	 */
     @Override
-   /* public SoireeDto getSoireeById(int soireeId) {
-        return SoireeEntityToDto(soireeRepository.getById(soireeId));
-    }*/
     public SoireeDto getSoireeById(int soireeId) {
         Soiree soiree = soireeRepository.findById(soireeId).orElseThrow(() ->
                 new IllegalArgumentException("Invalid Soiree ID: " + soireeId));
         return SoireeEntityToDto(soiree);
     }
     /**
-     * @param soireeId
-     * @return
-     */
+	 * Supprime une soirée de la base de données en utilisant son id 
+	 * et supprime également tous les billets et concerts associés à cette soirée.
+	 * @param soireeId - L'identifiant de la soirée à supprimer.
+	 * @return true si la suppression est réussie, sinon false.
+	 */
     @Override
     public boolean deleteSoiree(int soireeId) {
         List<Billet> billetList = billetRepository.findAll();
@@ -74,8 +80,9 @@ public class SoireeServiceImpl implements SoireeService {
     }
 
     /**
-     * @return
-     */
+    *Récupère la liste de toutes les soirées.
+    *@return une liste de toutes les soirées existantes.
+    */
     @Override
     public List<SoireeDto> getAllSoiree() {
         List<SoireeDto> soireeDtoList = new ArrayList<>();
@@ -84,12 +91,12 @@ public class SoireeServiceImpl implements SoireeService {
             soireeDtoList.add(SoireeEntityToDto(soiree));
         return soireeDtoList;
     }
-
-    /**
-     * @param soireeId
-     * @param soireeDto
-     * @return
-     */
+	
+	/**
+    Met à jour une soirée existante avec les informations contenues dans le SoireeDto correspondant.
+    @param soireeId l'id de la soirée à mettre à jour.
+    @param soireeDto SoireeDto contenant les informations à mettre à jour pour la soirée.
+	*/
     @Override
     public SoireeDto updateSoiree(int soireeId, SoireeDto soireeDto) {
         SoireeDto soireeDto1 = new SoireeDto();
@@ -99,7 +106,11 @@ public class SoireeServiceImpl implements SoireeService {
         return saveSoiree(soireeDto1);
     }
 
-
+	/**
+    Convertit une entité Soiree en SoireeDto.
+    @param soiree l'entité Soiree à convertir en SoireeDto.
+    @return un objet SoireeDto correspondant à l'entité Soiree passée en paramètre.
+    */
     private SoireeDto SoireeEntityToDto(Soiree soiree){
         SoireeDto soireeDto = new SoireeDto();
         soireeDto.setIdSoiree(soiree.getIdSoiree());
@@ -107,7 +118,11 @@ public class SoireeServiceImpl implements SoireeService {
         soireeDto.setNom(soiree.getNom());
         return soireeDto;
     }
-
+	/**
+    Convertit SoireeDto en entité Soiree.
+    @param soireeDto l'objet SoireeDto à convertir en entité Soiree.
+    @return une entité Soiree correspondant à l'objet SoireeDto passé en paramètre.
+    */
     private Soiree SoireeDtoToEntity(SoireeDto soireeDto) {
         Soiree soiree = new Soiree();
         soiree.setNom(soireeDto.getNom());
