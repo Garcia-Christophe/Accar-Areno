@@ -19,42 +19,51 @@ public class ConcertController {
 
 
     /**
-     * <p>Get all Concert in the system</p>
-     * @return List<ConcertDto>
-     */
+    Récupère la liste de tous les concerts.
+    @return La liste de tous les concerts.
+    */
     @GetMapping
     public List<ConcertDto> getConcert() {
         return concertService.getAllConcerts();
     }
 
     /**
-     * Method to get the concert based on the ID
-     */
+    Récupère un concert par son identifiant.
+    @param id L'identifiant du concert à récupérer.
+    @return Le concert correspondant à l'identifiant donné.
+    */
     @GetMapping("/{id}")
     public ConcertDto getConcert(@PathVariable int id){
         return concertService.getConcertById(id);
     }
 
-    /**
-     * Create a new concert in the system
-     */
+	/**
+    Enregistre un nouveau concert.
+    @param concertDto Le concert à enregistrer.
+    @return Le concert enregistré.
+    */
     @PostMapping
     public ConcertDto saveConcert(final @RequestBody ConcertDto concertDto){
         return concertService.saveConcert(concertDto);
     }
 
-    /**
-     * Delete a concert by it's id
-     */
+	/**
+    Supprime un concert par son identifiant.
+    @param id L'identifiant du concert à supprimer.
+    @return Un booléen indiquant si le concert a été supprimé avec succès.
+    */
     @DeleteMapping("/{id}")
     public Boolean deleteConcert(@PathVariable int id){
         return concertService.deleteConcert(id);
     }
 
 
-    /**
-     * Update an existing concert in the system
-     */
+	/**
+    Met à jour un concert par son identifiant.
+    @param id L'identifiant du concert à mettre à jour.
+    @param concertDto Les nouvelles informations du concert.
+    @return Le concert mis à jour.
+    */
     @PutMapping("/{id}")
     public ConcertDto updateConcert(@PathVariable int id, final @RequestBody ConcertDto concertDto){
         return concertService.updateConcert(id, concertDto);
