@@ -10,6 +10,10 @@ import com.repositories.ConcertRepository;
 import com.repositories.SoireeRepository;
 import com.services.SoireeService;
 import org.springframework.stereotype.Service;
+
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 @Service("soireeService")
@@ -66,17 +70,39 @@ public class SoireeServiceImpl implements SoireeService {
     @Override
     public boolean deleteSoiree(int soireeId) {
         List<Billet> billetList = billetRepository.findAll();
-        for( Billet billet : billetList)
-            if(billet.getIdSoiree().getIdSoiree()==soireeId)
-                billetRepository.delete(billet);
 
+        // Pour chaque billet
+        for (Billet billet : billetList) {
+            // S'il est relié à la soirée à supprimer
+            if (billet.getIdSoiree().getIdSoiree() == soireeId) {
+                // Alors on le supprime aussi
+                try {
+                    URL url = new URL("http://localhost:8079/accarareno/billets?id=" + billet.getIdBillet());
+                    HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+                    httpCon.setDoOutput(true);
+                    httpCon.setRequestProperty(
+                            "Content-Type", "application/x-www-form-urlencoded");
+                    httpCon.setRequestMethod("DELETE");
+                    httpCon.connect();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        // Pour chaque concert
         List<Concert> concertList = concertRepository.findAll();
-        for( Concert concert : concertList)
-            if(concert.getIdSoiree().getIdSoiree()==soireeId)
+        for( Concert concert : concertList) {
+            // Si le concert est prévu pour la soirée à supprimer
+            if(concert.getIdSoiree().getIdSoiree() == soireeId) {
+                // Alors on le supprime aussi
                 concertRepository.delete(concert);
+            }
+        }
+
+        // Enfin, suppression de la soirée
         soireeRepository.deleteById(soireeId);
         return true;
-
     }
 
     /**

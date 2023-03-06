@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "23ccb05b-6d3f-4d86-93f2-b4b09121fbc1",
+		"name": "gestionConcert",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26169235"
+	},
+	"item": [
+		{
+			"name": "get toutes les salles",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/salles",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get la salle avec l'id 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/salles/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salles",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mise à jour une salles",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"idSalle\": 2,\r\n        \"nom\": \"The Jazz Club\",\r\n        \"adresse\": \"456 Park Ave\",\r\n        \"capacite\": 3000,\r\n        \"nomGest\": \"Brown\",\r\n        \"prenomGest\": \"Emma\",\r\n        \"association\": \"Jazz Association\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/salles/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salles",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ajoute salle",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"idSalle\": 4,\r\n        \"nom\": \"The Pop Club\",\r\n        \"adresse\": \"99 Park Ave\",\r\n        \"capacite\": 1500,\r\n        \"nomGest\": \"Vivo\",\r\n        \"prenomGest\": \"book\",\r\n        \"association\": \"Pop Association\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/salles",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salles"
+					]
+				},
+				"description": "StartFragment\n\nEndFragment"
+			},
+			"response": []
+		},
+		{
+			"name": "supprimer la salles avec id 2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/salles/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salles",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get tout les concerts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/concerts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"concerts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get le concert 5",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/concerts/5",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"concerts",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mise à jour le concert avec id 2",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"date\": \"2023-03-15\",\r\n    \"heure\": \"22:00:00\",\r\n    \"duree\": \"02:00:00\",\r\n    \"idGroupe\": 5,\r\n    \"idSoiree\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/concerts/5",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"concerts",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ajoute concert",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"date\": \"2023-03-27\",\r\n    \"heure\": \"20:00:00\",\r\n    \"duree\": \"02:00:00\",\r\n    \"idGroupe\": 5,\r\n    \"idSoiree\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/concerts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"concerts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "supprimer le concert avec id 4",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/concerts/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"concerts",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get toutes les soirees",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/soirees",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"soirees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get la soiree 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/soirees/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"soirees",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mise a jour soirees 2",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"idSoiree\": 1,\r\n        \"nom\": \"Rock Night Ultimate\",\r\n        \"idSalle\": 1\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/soirees/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"soirees",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ajouter une soiree",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"idSoiree\": 2,\r\n        \"nom\": \"Jazz Night\",\r\n        \"idSalle\": 1\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/soirees",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"soirees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete soiree 2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/soirees/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"soirees",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

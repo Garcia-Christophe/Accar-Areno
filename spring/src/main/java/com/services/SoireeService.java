@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Interface for managing Soiree objects.
+ * Interface pour la gestion des objets Soiree.
  */
 @Service
 public interface SoireeService {
