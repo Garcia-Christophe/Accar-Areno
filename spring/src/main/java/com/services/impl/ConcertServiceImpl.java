@@ -10,6 +10,9 @@ import com.repositories.SoireeRepository;
 import com.services.ConcertService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,34 +36,41 @@ public class ConcertServiceImpl implements ConcertService {
 	*/
     @Override
     public ConcertDto saveConcert(ConcertDto concertDto) {
-        List<ConcertDto> concerts = this.getAllConcerts();
+        Concert concert = null;
+        //Vérification de l'unicité de l'identifiant du concert
+        try {
+            ConcertDto c =this.getConcertById(concertDto.getIdConcert());
+            throw new EntityExistsException("L'identifiant du concert existe déjà.");
+        }catch(EntityNotFoundException e){
+            List<ConcertDto> concerts = this.getAllConcerts();
+            // Pour tous les concerts existants
+            for (ConcertDto c : concerts) {
+                // Si le concert itéré a lieu dans la même salle
+                if (soireeRepository.getById(c.getIdSoiree()).getIdSalle().getIdSalle() == soireeRepository.getById(concertDto.getIdSoiree()).getIdSalle().getIdSalle()) {
+                    // Si le concert itéré a lieu le même jour
+                    if (c.getDate().toString().equals(concertDto.getDate().toString())) {
+                        // Si le concert itéré a lieu dans la même salle et le même jour que le concert en paramètre
+                        // Et que le concert itéré débute durant le concert en paramètre
+                        // Alors renvoie une erreur appropriée
+                        if (c.getHeure().getTime() >= concertDto.getHeure().getTime() && c.getHeure().getTime() <= concertDto.getHeure().getTime() + concertDto.getDuree().getTime()) {
+                            throw new IllegalArgumentException("Le concert ne peut débuter pendant un autre concert dans la même salle.");
+                        }
 
-        // Pour tous les concerts existants
-        for (ConcertDto c : concerts) {
-            // Si le concert itéré a lieu dans la même salle
-            if (soireeRepository.getById(c.getIdSoiree()).getIdSalle().getIdSalle() == soireeRepository.getById(concertDto.getIdSoiree()).getIdSalle().getIdSalle()) {
-                // Si le concert itéré a lieu le même jour
-                if (c.getDate().toString().equals(concertDto.getDate().toString())) {
-                    // Si le concert itéré a lieu dans la même salle et le même jour que le concert en paramètre
-                    // Et que le concert itéré débute durant le concert en paramètre
-                    // Alors renvoie une erreur appropriée
-                    if (c.getHeure().getTime() >= concertDto.getHeure().getTime() && c.getHeure().getTime() <= concertDto.getHeure().getTime() + concertDto.getDuree().getTime()) {
-                        throw new IllegalArgumentException("Le concert ne peut débuter pendant un autre concert dans la même salle.");
-                    }
-
-                    // Si le concert itéré a lieu dans la même salle et le même jour que le concert en paramètre
-                    // Et que le concert itéré se termine durant le concert en paramètre
-                    // Alors renvoie une erreur appropriée
-                    if (concertDto.getHeure().getTime() >= c.getHeure().getTime() && concertDto.getHeure().getTime() <= c.getHeure().getTime() + c.getDuree().getTime()) {
-                        throw new IllegalArgumentException("Le concert ne peut se terminer pendant un autre concert dans la même salle.");
+                        // Si le concert itéré a lieu dans la même salle et le même jour que le concert en paramètre
+                        // Et que le concert itéré se termine durant le concert en paramètre
+                        // Alors renvoie une erreur appropriée
+                        if (concertDto.getHeure().getTime() >= c.getHeure().getTime() && concertDto.getHeure().getTime() <= c.getHeure().getTime() + c.getDuree().getTime()) {
+                            throw new IllegalArgumentException("Le concert ne peut se terminer pendant un autre concert dans la même salle.");
+                        }
                     }
                 }
             }
+
+            // Si le concert peut-être créé, alors l'enregistre en base de données
+            concert = concertRepository.save(concertDtoToEntity(concertDto));
         }
 
-        // Si le concert peut-être créé, alors l'enregistre en base de données
-        Concert concert = concertRepository.save(ConcertDtoToEntity(concertDto));
-        return ConcertEntityToDao(concert);
+        return concertEntityToDto(concert);
     }
 
     /**
@@ -70,7 +80,8 @@ public class ConcertServiceImpl implements ConcertService {
     */
     @Override
     public ConcertDto getConcertById(int concertId) {
-        return ConcertEntityToDao(concertRepository.getById(concertId));
+        Concert concert = concertRepository.findById(concertId).orElseThrow(() -> new EntityNotFoundException("Concert not found"));
+        return concertEntityToDto(concert);
     }
 
     /**
@@ -93,7 +104,7 @@ public class ConcertServiceImpl implements ConcertService {
         List<ConcertDto> concertDtosList = new ArrayList<>();
         List<Concert> concertList = concertRepository.findAll();
         for (Concert concert : concertList){
-            concertDtosList.add(ConcertEntityToDao(concert));
+            concertDtosList.add(concertEntityToDto(concert));
         }
         return concertDtosList;
     }
@@ -106,14 +117,44 @@ public class ConcertServiceImpl implements ConcertService {
 	*/
     @Override
     public ConcertDto updateConcert(int concertId, ConcertDto concertDto) {
-        ConcertDto concertDto1 = getConcertById(concertId);
-        concertDto1.setIdConcert(concertDto.getIdConcert());
-        concertDto1.setIdGroupe(concertDto.getIdGroupe());
-        concertDto1.setIdSoiree(concertDto.getIdSoiree());
-        concertDto1.setDate(concertDto.getDate());
-        concertDto1.setDuree(concertDto.getDuree());
-        concertDto1.setHeure(concertDto.getHeure());
-        return saveConcert(concertDto1);
+        ConcertDto concertDto1 = null;
+        Concert concert = concertRepository.findById(concertId).orElseThrow(() -> new EntityNotFoundException("Concert not found"));
+        if(concertDto.getIdGroupe()!=concert.getIdGroupe().getIdGroupe()){
+            throw new NoResultException("Impossible de changer l'identifiant du groupe.");
+        }
+        if(concertDto.getIdSoiree()!=concert.getIdSoiree().getIdSoiree()){
+            throw new NoResultException("Impossible de changer l'identifiant de la soirée.");
+        }
+        List<ConcertDto> concerts = this.getAllConcerts();
+        // Pour tous les concerts existants
+        for (ConcertDto c : concerts) {
+            // Si le concert itéré a lieu dans la même salle
+            if (soireeRepository.getById(c.getIdSoiree()).getIdSalle().getIdSalle() == soireeRepository.getById(concertDto.getIdSoiree()).getIdSalle().getIdSalle()) {
+                // Si le concert itéré a lieu le même jour
+                if (c.getDate().toString().equals(concertDto.getDate().toString())) {
+                    // Si le concert itéré a lieu dans la même salle et le même jour que le concert en paramètre
+                    // Et que le concert itéré débute durant le concert en paramètre
+                    // Alors renvoie une erreur appropriée
+                    if (c.getHeure().getTime() >= concertDto.getHeure().getTime() && c.getHeure().getTime() <= concertDto.getHeure().getTime() + concertDto.getDuree().getTime()) {
+                        throw new IllegalArgumentException("Le concert ne peut débuter pendant un autre concert dans la même salle.");
+                    }
+
+                    // Si le concert itéré a lieu dans la même salle et le même jour que le concert en paramètre
+                    // Et que le concert itéré se termine durant le concert en paramètre
+                    // Alors renvoie une erreur appropriée
+                    if (concertDto.getHeure().getTime() >= c.getHeure().getTime() && concertDto.getHeure().getTime() <= c.getHeure().getTime() + c.getDuree().getTime()) {
+                        throw new IllegalArgumentException("Le concert ne peut se terminer pendant un autre concert dans la même salle.");
+                    }
+                }
+            }
+        }
+        // Si les heures et dates correspondent alors on les modifies
+        concert.setDate(concertDto.getDate());
+        concert.setDuree(concertDto.getDuree());
+        concert.setHeure(concertDto.getHeure());
+        concertRepository.save(concert);
+        concertDto1 = this.concertEntityToDto(concert);
+        return concertDto1;
     }
 
 
@@ -122,7 +163,7 @@ public class ConcertServiceImpl implements ConcertService {
     * @param concert l'objet Concert à convertir
     * @return un objet ConcertDto correspondant à l'objet Concert converti
     */
-    private ConcertDto ConcertEntityToDao(Concert concert){
+    private ConcertDto concertEntityToDto(Concert concert){
         ConcertDto concertDto = new ConcertDto();
         concertDto.setIdConcert(concert.getIdConcert());
         concertDto.setDate(concert.getDate());
@@ -138,7 +179,7 @@ public class ConcertServiceImpl implements ConcertService {
     * @param concertDto l'objet ConcertDto à convertir
     * @return un objet Concert correspondant à l'objet Concert converti
     */
-    private Concert ConcertDtoToEntity(ConcertDto concertDto) {
+    private Concert concertDtoToEntity(ConcertDto concertDto) {
         Concert concert = new Concert();
         concert.setIdConcert(concertDto.getIdConcert());
         concert.setDate(concertDto.getDate());

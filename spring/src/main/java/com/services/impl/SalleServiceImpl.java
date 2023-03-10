@@ -1,6 +1,7 @@
 package com.services.impl;
 
 import com.dtos.SalleDto;
+import com.dtos.SoireeDto;
 import com.entities.Salle;
 import com.entities.Soiree;
 import com.repositories.SalleRepository;
@@ -8,6 +9,9 @@ import com.repositories.SoireeRepository;
 import com.services.SalleService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 @Service("salleService")
@@ -36,8 +40,19 @@ public class SalleServiceImpl implements SalleService {
     */
     @Override
     public SalleDto saveSalle(SalleDto salleDto) {
-        Salle salle = salleRepository.save(SalleDtoToEntity(salleDto));
-        return SalleEntityToDto(salle);
+        Salle salle = null;
+        //Vérification que l'identifiant n'est pas déjà utilisé
+        try {
+            SalleDto s = this.getSalleById(salleDto.getIdSalle());
+            throw new EntityExistsException("L'identifiant de la salle existe déjà");
+        }catch(EntityNotFoundException e){
+            //Vérification que le nom, l'adresse et la capacité sont bien fourni.
+            if(salleDto.getNom()==null || salleDto.getNom().length()==0|| salleDto.getAdresse()==null|| salleDto.getAdresse().length()==0 || salleDto.getCapacite()<=0){
+                throw new NoResultException("Le nom, l'addresse et la capicité doivent être indiqués.");
+            }
+            salle = salleRepository.save(salleDtoToEntity(salleDto));
+        }
+        return salleEntityToDto(salle);
     }
 
     /**
@@ -47,7 +62,8 @@ public class SalleServiceImpl implements SalleService {
     */
     @Override
     public SalleDto getSalleById(int salleId) {
-        return SalleEntityToDto(salleRepository.getById(salleId));
+        Salle salle = salleRepository.findById(salleId).orElseThrow(() -> new EntityNotFoundException("Salle not found"));
+        return this.salleEntityToDto(salle);
     }
 
     /**
@@ -75,7 +91,7 @@ public class SalleServiceImpl implements SalleService {
         List<SalleDto> salleDtoList = new ArrayList<>();
         List<Salle> salleList = salleRepository.findAll();
         for (Salle salle : salleList)
-            salleDtoList.add(SalleEntityToDto(salle));
+            salleDtoList.add(salleEntityToDto(salle));
         return salleDtoList;
     }
 
@@ -88,21 +104,37 @@ public class SalleServiceImpl implements SalleService {
      */
     @Override
     public SalleDto updateSalle(int salleId, SalleDto salleDto) {
-        SalleDto salleDto1 = getSalleById(salleId);
-        salleDto1.setNom(salleDto.getNom());
-        salleDto1.setAdresse(salleDto.getAdresse());
-        salleDto1.setCapacite(salleDto.getCapacite());
-        salleDto1.setNomGest(salleDto.getNomGest());
-        salleDto1.setPrenomGest(salleDto.getPrenomGest());
-        salleDto1.setAssociation(salleDto.getAssociation());
-        return saveSalle(salleDto1);
+        Salle salle = salleRepository.findById(salleId).orElseThrow(() -> new EntityNotFoundException("Salle not found"));
+        SalleDto salleDto1 = null;
+        if(salleDto.getNom() != null && salleDto.getNom().length()>0){
+            salle.setNom(salleDto.getNom());
+        }
+        if(salleDto.getAdresse() != null && salleDto.getAdresse().length()>0){
+            salle.setAdresse(salleDto.getAdresse());
+        }
+        if(salleDto.getCapacite()>0){
+            salle.setCapacite(salleDto.getCapacite());
+        }
+        if(salleDto.getNomGest() != null && salleDto.getNomGest().length()>0){
+            salle.setNomGest(salleDto.getNomGest());
+        }
+        if(salleDto.getPrenomGest() != null && salleDto.getPrenomGest().length()>0){
+            salle.setPrenomGest(salleDto.getPrenomGest());
+            System.out.println("prenom");
+        }
+        if(salleDto.getAssociation() != null && salleDto.getAssociation().length()>0){
+            salle.setAssociation(salleDto.getAssociation());
+        }
+        salleRepository.save(salle);
+        salleDto1 = this.salleEntityToDto(salle);
+        return salleDto1;
     }
 	/**
 	convertit un objet de type Salle en un objet de type SalleDto.
 	@param salle  la salle à convertir en SalleDto
 	@return SalleDto correspondant à la salle fourni
 	*/
-    private SalleDto SalleEntityToDto(Salle salle){
+    private SalleDto salleEntityToDto(Salle salle){
         SalleDto salleDto = new SalleDto();
         salleDto.setIdSalle(salle.getIdSalle());
         salleDto.setNom(salle.getNom());
@@ -119,7 +151,7 @@ public class SalleServiceImpl implements SalleService {
 	@param @param salleDto l'objet SalleDto à convertir en salle
 	@return Salle correspondant à la salleDto fourni
 	*/
-    private Salle SalleDtoToEntity(SalleDto salleDto) {
+    private Salle salleDtoToEntity(SalleDto salleDto) {
         Salle salle = new Salle();
         salle.setIdSalle(salleDto.getIdSalle());
         salle.setNom(salleDto.getNom());
