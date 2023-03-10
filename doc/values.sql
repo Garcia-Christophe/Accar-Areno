@@ -4,7 +4,7 @@
 
 INSERT INTO `Groupe` (`idGroupe`, `nom`, `nbArtistes`) VALUES
 (1, 'The Beatles', 2),
-(2, 'Groupe 2', 1);
+(2, 'Nirvana', 1);
 
 --
 -- Déchargement des données de la table `Salle`
