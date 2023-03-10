@@ -56,11 +56,6 @@ public class Salle implements Serializable {
         soireeSet = new HashSet<Soiree>();
     }
 
-//    public Salle(Integer idSalle) {
-//        this.idSalle = idSalle;
-//        soireeSet = new HashSet<Soiree>();
-//    }
-
     public Integer getIdSalle() {
         return idSalle;
     }
@@ -134,7 +129,6 @@ public class Salle implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Salle)) {
             return false;
         }

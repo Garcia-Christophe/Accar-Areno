@@ -33,11 +33,6 @@ public class SalleServiceImpl implements SalleService {
         this.soireeService = soireeService;
     }
 
-   /**
-    *Ajoute une salle en base de données à partir d'un objet SalleDto.
-    *@param salleDto l'objet SalleDto à enregistrer
-    *@return l'objet SalleDto correspondant à la salle enregistrée en bdd
-    */
     @Override
     public SalleDto saveSalle(SalleDto salleDto) {
         Salle salle = null;
@@ -55,26 +50,16 @@ public class SalleServiceImpl implements SalleService {
         return salleEntityToDto(salle);
     }
 
-    /**
-    *Récupère une salle par son identifiant.
-    *@param salleId l'identifiant de la salle à récupérer
-    *@return un objet SalleDto représentant la salle correspondante à l'identifiant donné
-    */
     @Override
     public SalleDto getSalleById(int salleId) {
         Salle salle = salleRepository.findById(salleId).orElseThrow(() -> new EntityNotFoundException("Salle not found"));
         return this.salleEntityToDto(salle);
     }
 
-    /**
-    *Supprime une salle a partir de son id.
-    *Si la salle a été réservée pour une ou plusieurs soirées, les soirées associées seront également supprimées.
-    *@param salleId l'id de la salle à supprimer.
-    *@return true si la salle a été supprimée avec succès, sinon false.
-    */
     @Override
     public boolean deleteSalle(int salleId) {
         List<Soiree> soireeList = soireeRepository.findAll();
+        //Pour chaque soirée, si sa salle correspond à salleId alors on supprime la soirée.
         for( Soiree soiree : soireeList)
             if(soiree.getIdSalle().getIdSalle()==salleId)
                 soireeService.deleteSoiree(soiree.getIdSoiree());
@@ -82,46 +67,43 @@ public class SalleServiceImpl implements SalleService {
         return true;
     }
 
-    /**
-    *Récupère la liste de toutes les salles.
-    *@return une liste de toutes les salles existantes.
-    */
+
     @Override
     public List<SalleDto> getAllSalles() {
         List<SalleDto> salleDtoList = new ArrayList<>();
         List<Salle> salleList = salleRepository.findAll();
+        //Pour chaque salle de la BDD, récupère l'équivalent en SalleDto.
         for (Salle salle : salleList)
             salleDtoList.add(salleEntityToDto(salle));
         return salleDtoList;
     }
 
-    /**
-    Met à jour les informations d'une salle existante, par son id.
-    @param salleId l'id de la salle à mettre à jour
-    @param salleDto les nouvelles informations de la salle
-    @return la salle mise à jour en SalleDto
-
-     */
     @Override
     public SalleDto updateSalle(int salleId, SalleDto salleDto) {
         Salle salle = salleRepository.findById(salleId).orElseThrow(() -> new EntityNotFoundException("Salle not found"));
         SalleDto salleDto1 = null;
+        //Si le nom fourni est différent de null alors on modifie le nom courant par celui fourni.
         if(salleDto.getNom() != null && salleDto.getNom().length()>0){
             salle.setNom(salleDto.getNom());
         }
+        //Si l'adresse fourni est différente de null alors on modifie l'adresse courante par celle fourni.
         if(salleDto.getAdresse() != null && salleDto.getAdresse().length()>0){
             salle.setAdresse(salleDto.getAdresse());
         }
+        //Si la capacité fourni est différente de null alors on modifie la capacité courante par celle fourni.
         if(salleDto.getCapacite()>0){
             salle.setCapacite(salleDto.getCapacite());
         }
+        //Si le nomGest fourni est différent de null alors un modifie le nomGest courant par celui fourni.
         if(salleDto.getNomGest() != null && salleDto.getNomGest().length()>0){
             salle.setNomGest(salleDto.getNomGest());
         }
+        //Si le prenomGest fourni est différent de null alors un modifie le prenomGest courant par celui fourni.
         if(salleDto.getPrenomGest() != null && salleDto.getPrenomGest().length()>0){
             salle.setPrenomGest(salleDto.getPrenomGest());
             System.out.println("prenom");
         }
+        //Si l'association fourni est différente de null alors on modifie l'association courante par celle fourni.
         if(salleDto.getAssociation() != null && salleDto.getAssociation().length()>0){
             salle.setAssociation(salleDto.getAssociation());
         }

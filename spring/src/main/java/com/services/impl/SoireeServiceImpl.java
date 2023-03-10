@@ -29,20 +29,12 @@ public class SoireeServiceImpl implements SoireeService {
     private final ConcertRepository concertRepository ;
     private final SalleRepository salleRepository;
 
-
-
-
     public SoireeServiceImpl(SoireeRepository soireeRepository, ConcertRepository concertRepository, SalleRepository salleRepository) {
         this.soireeRepository = soireeRepository;
         this.concertRepository = concertRepository;
         this.salleRepository = salleRepository;
     }
 
-    /**
-	 * Enregistre une soirée dans la base de données.
-	 * @param soireeDto - L'objet SoireeDto contenant les informations de la soirée à enregistrer.
-	 * @return L'objet SoireeDto sauvegardé dans la base de données.
-	 */ 	
     @Override
     public SoireeDto saveSoiree(SoireeDto soireeDto) {
         SoireeDto soireeDtoReturn = null;
@@ -61,27 +53,15 @@ public class SoireeServiceImpl implements SoireeService {
         return soireeDtoReturn;
     }
 
-	/**
-	 * Récupère une soirée de la base de données en utilisant son identifiant.
-	 * @param soireeId - L'identifiant de la soirée à récupérer.
-	 * @return L'objet SoireeDto correspondant à l'identifiant spécifié.
-	 * @throws IllegalArgumentException si l'identifiant spécifié est invalide.
-	 */
     @Override
     public SoireeDto getSoireeById(int soireeId) {
         Soiree soiree = soireeRepository.findById(soireeId).orElseThrow(() -> new EntityNotFoundException("Soiree not found"));
         return soireeEntityToDto(soiree);
     }
-    /**
-	 * Supprime une soirée de la base de données en utilisant son id 
-	 * et supprime également tous les billets et concerts associés à cette soirée.
-	 * @param soireeId - L'identifiant de la soirée à supprimer.
-	 * @return true si la suppression est réussie, sinon false.
-	 */
+
     @Override
     public boolean deleteSoiree(int soireeId) {
         Soiree soiree = soireeRepository.getById(soireeId);
-
         // Vérification que la soirée n'a aucun billet.
         if(soiree.getBilletSet() != null){
             if(soiree.getBilletSet().size() != 0){
@@ -104,24 +84,16 @@ public class SoireeServiceImpl implements SoireeService {
         return true;
     }
 
-    /**
-    *Récupère la liste de toutes les soirées.
-    *@return une liste de toutes les soirées existantes.
-    */
     @Override
     public List<SoireeDto> getAllSoiree() {
         List<SoireeDto> soireeDtoList = new ArrayList<>();
         List<Soiree> soireeList = soireeRepository.findAll();
+        //Pour chaque soirée de la BDD, récupère l'équivalent en SoireeDto.
         for (Soiree soiree : soireeList)
             soireeDtoList.add(soireeEntityToDto(soiree));
         return soireeDtoList;
     }
-	
-	/**
-    Met à jour une soirée existante avec les informations contenues dans le SoireeDto correspondant.
-    @param soireeId l'id de la soirée à mettre à jour.
-    @param soireeDto SoireeDto contenant les informations à mettre à jour pour la soirée.
-	*/
+
     @Override
     public SoireeDto updateSoiree(int soireeId, SoireeDto soireeDto) {
         Soiree soiree = soireeRepository.findById(soireeId).orElseThrow(() -> new EntityNotFoundException("Soiree not found"));
